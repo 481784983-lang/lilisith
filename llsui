@@ -1,0 +1,1121 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>皇家典籍 (V17.2 完美修复版)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Inter:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    /* --- [ 1. 皇家典籍 日常 UI CSS (V17) ] --- */
+    :root {
+        --parchment-bg: #F5E8C8;
+        --parchment-texture: linear-gradient(rgba(245, 232, 200, 0.9), rgba(222, 184, 135, 0.95));
+        --parchment-darker: #C8B59A;
+        --content-bg: #FFFBF0;
+        --text-color: #6D4C41;
+        --heading-color: #4E342E;
+        --secondary-text: #A1887F;
+        --accent-gold: #C0952A;
+        --accent-gold-light: #E0B85F;
+        --accent-pink: #D81B60;
+        --accent-purple: #8E24AA; /* 新增：用于内心想法/记忆 */
+        --icon-color: #6D4C41;
+        --border-color: rgba(109, 76, 65, 0.3);
+        --shadow-color: rgba(74, 44, 19, 0.4);
+        --stamina-color: #9CCC65;
+        --hp-color: #EF9A9A;
+        --mp-color: #90CAF9;
+        --combat-red: #B71C1C;
+    }
+    
+    body {
+        background-color: var(--text-color);
+        background-image: var(--parchment-texture);
+        color: var(--text-color);
+        font-family: 'Inter', 'Noto Sans SC', sans-serif;
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    body.status-mode { padding: 15px 10px; }
+    body.combat-mode { padding: 0; }
+
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); } ::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 3px; border: 1px solid var(--parchment-bg); }
+    
+    #chessboard-container-wrapper {
+        max-width: 900px; margin: 10px auto; 
+        border: 2px solid var(--heading-color); 
+        border-radius: 8px; 
+        background: var(--parchment-bg); 
+        box-shadow: 0 3px 12px var(--shadow-color), inset 0 0 10px rgba(74, 44, 19, 0.25); 
+        padding: 10px; position: relative; z-index: 1;
+    }
+    .hidden { display: none !important; }
+    h2, h3, h4, details > summary { font-family: 'EB Garamond', 'Noto Sans SC', serif; font-weight: 700; color: var(--heading-color); text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7); margin-top: 0; margin-bottom: 8px; }
+    h2 { font-size: 1.5em; margin-bottom: 15px; text-align: center; } 
+    h3 { font-size: 1.25em; } h4 { font-size: 1.1em; } 
+    h3::before, h4::before { content: '•'; color: var(--accent-gold); margin-right: 6px; font-size: 0.8em; vertical-align: middle; }
+    .empty-state-text { color: var(--secondary-text); text-align: center; padding: 10px; font-style: normal; opacity: 0.8; font-size: 0.9em; }
+    .property-name { color: var(--secondary-text); font-weight: 500; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.5px; }
+    .value-main { color: var(--text-color); font-weight: 600; font-size: 0.95em; }
+    details.section { background: rgba(255, 255, 255, 0.15); border: none; border-radius: 8px; margin-bottom: 10px; overflow: hidden; transition: background-color 0.3s ease; box-shadow: inset 0 0 0 1px rgba(109, 76, 65, 0.1); }
+    details[open].section { background-color: rgba(255, 255, 255, 0.3); } 
+    details > summary { display: flex; justify-content: flex-start; align-items: center; list-style: none; padding: 10px 15px; cursor: pointer; font-size: 1.2em; position: relative; border-bottom: 1px solid transparent; transition: border-color 0.3s ease; } 
+    details.section > summary::before { content: none; } 
+    .summary-icon { color: var(--accent-gold); margin-right: 12px; font-size: 1em; opacity: 0.9; width: 1.2em; text-align: center; } 
+    details > summary::-webkit-details-marker { display: none; } 
+    .arrow-toggle { transition: transform 0.3s ease; margin-left: auto; font-size: 0.8em; color: var(--secondary-text); } 
+    details[open] > summary .arrow-toggle { transform: rotate(90deg); } 
+    details[open] > summary { border-bottom-color: var(--border-color); }
+    .section-content { padding: 15px; background-color: var(--content-bg); border-top: none; position: relative; background-image: linear-gradient(45deg, rgba(109, 76, 65, 0.03) 25%, transparent 25%, transparent 75%, rgba(109, 76, 65, 0.03) 75%, rgba(109, 76, 65, 0.03)), linear-gradient(-45deg, rgba(109, 76, 65, 0.03) 25%, transparent 25%, transparent 75%, rgba(109, 76, 65, 0.03) 75%, rgba(109, 76, 65, 0.03)); background-size: 20px 20px; }
+    .section-content::before { content: ''; position: absolute; top: 0; left: 15px; right: 15px; height: 1px; background-image: linear-gradient(to right, transparent, var(--accent-gold) 30%, var(--accent-gold) 70%, transparent); opacity: 0.5; }
+    details.sub-section { background: rgba(0, 0, 0, 0.03); border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 8px; overflow: hidden; transition: background-color 0.2s ease; } 
+    details.sub-section:hover { background-color: rgba(0, 0, 0, 0.06); } 
+    details[open].sub-section { border-color: var(--accent-gold); } 
+    details.sub-section > summary { font-size: 1em; padding: 8px 12px; position: relative; display: flex; align-items: center; font-family: 'Inter', 'Noto Sans SC', sans-serif; font-weight: 600; } 
+    details.sub-section > summary::before { content: none; } 
+    details.sub-section > summary::after { content: '❈'; color: var(--secondary-text); font-size: 0.7em; opacity: 0.6; margin-left: 8px; order: 1; } 
+    details.sub-section.is-redline > summary { border-left: 3px solid var(--accent-pink); padding-left: 9px; } 
+    .sub-section-content { padding: 10px 12px; } 
+    .sub-section-content p { margin: 4px 0; line-height: 1.5; font-size: 0.9em; } 
+    .sub-section-content p b { color: var(--secondary-text); margin-right: 4px; font-weight: 600; }
+    hr { border: none; height: 1px; background-image: linear-gradient(to right, rgba(109, 76, 65, 0.1) 0%, rgba(109, 76, 65, 0.4) 30%, var(--accent-gold) 50%, rgba(109, 76, 65, 0.4) 70%, rgba(109, 76, 65, 0.1) 100%); opacity: 0.8; margin: 12px 0; }
+    .world-info-box { display: grid; grid-template-columns: 1fr; gap: 8px; background-color: rgba(0,0,0,0.05); padding: 10px; border-radius: 6px; margin-bottom: 12px; border: 1px solid var(--border-color); box-shadow: inset 0 0 5px rgba(0,0,0,0.05); } 
+    .world-info-box > div { border-bottom: 1px dotted var(--border-color); padding-bottom: 5px; margin-bottom: 5px; } 
+    .world-info-box > div:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; } 
+    .world-info-box p { margin: 2px 0; } 
+    @media (min-width: 600px) { .world-info-box { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); } .world-info-box > div { border-bottom: none; border-right: 1px dotted var(--border-color); padding-bottom: 0; margin-bottom: 0; padding-right: 10px; margin-right: 10px; } .world-info-box > div:last-child { border-right: none; margin-right: 0; padding-right: 0; } }
+    .progress-bar-container { background-color: rgba(0,0,0,0.1); border-radius: 8px; height: 8px; padding: 1px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.3); overflow: hidden; position: relative; flex-grow: 1; border: 1px solid rgba(0,0,0,0.1); } 
+    .progress-bar-value { height: 100%; border-radius: 6px; transition: width 0.5s ease; background: linear-gradient(to right, var(--accent-gold), var(--accent-gold-light)); box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), inset 0 -1px 1px rgba(0,0,0,0.15); } 
+    #main-hp-bar { background: linear-gradient(to right, var(--hp-color), #F48FB1); } 
+    #main-mp-bar { background: linear-gradient(to right, var(--mp-color), #90CAF9); } 
+    #main-sp-bar { background: linear-gradient(to right, var(--stamina-color), #AED581); }
+    .item-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; padding: 8px 0; border-radius: 0; transition: background-color 0.2s; position: relative; border-bottom: 1px dotted var(--border-color); } 
+    .item-row:last-child { border-bottom: none; } .item-row:hover { background-color: rgba(0, 0, 0, 0.03); } .item-row > div:first-child { padding-left: 0; } .item-row .value-main { text-align: right; font-size: 0.9em; } .item-row small { font-size: 0.85em; opacity: 0.8; color: var(--secondary-text); }
+    .map-location { display: flex; align-items: center; gap: 10px; cursor: default; padding: 8px 5px; border-radius: 4px; transition: background-color 0.2s; position: relative; border-bottom: 1px dotted var(--border-color); } 
+    .map-location:last-child { border-bottom: none; } .map-location:hover { background-color: rgba(0, 0, 0, 0.03); } .map-location::before { content: '📜'; color: var(--accent-gold); opacity: 0.8; margin-right: 5px; font-size: 0.9em; } .location-text { flex-grow: 1; font-size: 0.9em; } .location-text b { font-weight: 600; } .location-text small { font-size: 0.9em; color: var(--secondary-text); }
+    .action-button, .filter-btn { background-color: rgba(255, 255, 255, 0.3); border: 1px solid var(--border-color); color: var(--text-color); padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; font-size: 0.9em; font-family: 'Inter', 'Noto Sans SC', sans-serif; box-shadow: 0 1px 3px rgba(0,0,0,0.15); text-shadow: none; min-width: 70px; text-align: center; line-height: 1.4; } 
+    .action-button i, .filter-btn i { margin-right: 6px; opacity: 0.8; font-size: 0.9em; } 
+    .action-button:hover, .filter-btn:hover { background-color: rgba(255, 255, 255, 0.5); border-color: var(--accent-gold); color: var(--heading-color); box-shadow: 0 2px 5px rgba(0,0,0,0.2); font-weight: 600; transform: translateY(-1px); } 
+    .filter-btn.active { background-color: var(--accent-gold); color: var(--content-bg); border-color: var(--accent-gold); font-weight: 600; box-shadow: inset 0 1px 2px rgba(0,0,0,0.2); transform: none; }
+    .detail-grid { display: grid; grid-template-columns: 1fr; gap: 8px; } 
+    @media (min-width: 480px) { .attributes-grid { grid-template-columns: 1fr 1fr; } } .detail-grid-item { display: grid; grid-template-columns: 20px auto 1fr; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px dotted rgba(109, 76, 65, 0.3); } 
+    .detail-grid-item:last-child { border-bottom: none; } .detail-grid-item .icon { color: var(--icon-color); text-shadow: none; text-align: center; font-size: 1em; width: 20px; flex-shrink: 0; opacity: 0.8; } .detail-grid-item .value-main { text-align: right; font-size: 0.95em; } .resource-row .icon { text-shadow: 0 0 6px rgba(255, 255, 255, 0.7); opacity: 1; } .resource-grid-item { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px dotted rgba(109, 76, 65, 0.3); } .resource-row { display: flex; align-items: center; gap: 8px; flex-grow: 1; } .resource-row .value-main { font-size: 0.9em; white-space: nowrap; }
+    /* 新增：用于长文本描述（如肉体描写） */
+    .long-text-block { background: rgba(0,0,0,0.03); padding: 8px; border-radius: 4px; margin-top: 4px; font-size: 0.9em; border: 1px solid rgba(109, 76, 65, 0.1); }
+    /* 新增：内心想法样式 */
+    .inner-thought-block { background: rgba(142, 36, 170, 0.05); border-left: 3px solid var(--accent-purple); padding: 8px; margin: 5px 0; font-style: italic; font-size: 0.9em; color: var(--text-color); }
+    .erotic-tag { color: var(--accent-pink); font-size: 0.8em; border: 1px solid var(--accent-pink); padding: 1px 4px; border-radius: 4px; margin-right: 5px; }
+    
+    .currency-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 6px; } 
+    .currency-item { display: flex; align-items: center; background-color: rgba(0,0,0,0.05); padding: 5px 8px; border-radius: 6px; border: 1px solid var(--border-color); } 
+    .currency-icon { font-size: 1.1em; margin-right: 6px; width: 18px; text-align: center; } .currency-info .property-name { font-size: 0.7em; } .currency-info .value-main { font-size: 0.95em; } 
+    .icon-gold, .icon-platinum, .icon-crystal { color: var(--accent-gold); } .icon-silver { color: #A0A0A0; } .icon-copper { color: #A05A2C; } .icon-bone { color: #CEC8B7; } .tag { background-color: var(--secondary-text); color: var(--content-bg); padding: 1px 5px; border-radius: 4px; font-size: 0.7em; font-weight: normal; margin-left: 4px; display: inline-block; white-space: nowrap; }
+    .char-favor-bar-container { background-color: rgba(0,0,0,0.1); border-radius: 5px; height: 6px; overflow:hidden; border: 1px solid var(--border-color); padding: 1px; } 
+    .char-favor-bar { background: var(--accent-gold); height: 100%; border-radius: 3px; transition: width 0.5s ease; box-shadow: none; }
+    .memory-entry { background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 6px; } 
+    .memory-entry[open] { box-shadow: none; border-color: var(--accent-gold); } .memory-entry > summary { font-size: 0.9em; padding: 6px 10px; font-family: 'Inter', 'Noto Sans SC', sans-serif; font-weight: 500; } 
+    .memory-content { padding: 0 10px 10px 10px; line-height: 1.5; color: var(--text-color); font-size: 0.85em; opacity: 0.9; } .memory-content p { margin-top: 5px; }
+    .protagonist-tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 10px; overflow-x: auto; } 
+    .protagonist-tab { padding: 8px 12px; cursor: pointer; background-color: transparent; border: 1px solid transparent; border-bottom: none; border-radius: 6px 6px 0 0; margin-right: 2px; color: var(--secondary-text); font-family: 'EB Garamond', serif; font-weight: 700; font-size: 1.05em; transition: all 0.2s ease; text-shadow: none; position: relative; white-space: nowrap; } 
+    .protagonist-tab:hover { color: var(--accent-gold); } 
+    .protagonist-tab.active { color: var(--accent-gold); background-color: var(--content-bg); border-color: var(--border-color); border-bottom-color: var(--content-bg); margin-bottom: -1px; } 
+    .protagonist-tab.active::after { content: ''; position: absolute; bottom: 0px; left: 15%; width: 70%; height: 2px; background-color: var(--accent-gold); border-radius: 1px; } 
+    .protagonist-tab-content { padding: 15px; background-image: linear-gradient(45deg, rgba(109, 76, 65, 0.03) 25%, transparent 25%, transparent 75%, rgba(109, 76, 65, 0.03) 75%, rgba(109, 76, 65, 0.03)), linear-gradient(-45deg, rgba(109, 76, 65, 0.03) 25%, transparent 25%, transparent 75%, rgba(109, 76, 65, 0.03) 75%, rgba(109, 76, 65, 0.03)); background-size: 20px 20px; }
+    .fp-value { font-weight: 700; color: var(--accent-gold-light); text-shadow: 0 0 5px rgba(224, 184, 95, 0.6); font-size: 1.1em; }
+    /* --- [ End of Daily UI CSS ] --- */
+
+
+    /* --- [ 2. 战斗 UI v15 (魔導書・聖戦版 by Konata) ] --- */
+    :root { 
+        --arcane-bg: #1a1f2e;
+        --arcane-panel-bg: rgba(10, 15, 25, 0.6);
+        --arcane-border: #3a4a6b;
+        --arcane-glow: #76DDFB;
+        --arcane-glow-shadow: rgba(118, 221, 251, 0.5);
+
+        --accent-gold-battle: var(--accent-gold);
+        --accent-gold-light-battle: var(--accent-gold-light);
+
+        --battle-font-primary: 'Noto Sans SC', sans-serif;
+        --battle-font-secondary: 'Cinzel', 'EB Garamond', 'Noto Serif SC', serif; 
+        
+        --text-light: #E0E8F5;
+        --text-dark: #1a1a1a;
+        --text-secondary-battle: #8b9bb3;
+
+        --hp-color: #c0392b;
+        --hp-color-light: #e74c3c;
+        --mp-color: #2980b9;
+        --mp-color-light: #3498db;
+        --bar-bg: #2b344b;
+        --overlay-bg: rgba(26, 31, 46, 0.9);
+        --log-bg: rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes pulse-glow-battle {
+        0%, 100% { box-shadow: 0 0 20px rgba(192, 149, 42, 0.6), inset 0 0 10px rgba(0, 0, 0, 0.5), 0 0 10px var(--arcane-glow-shadow); }
+        50% { box-shadow: 0 0 30px rgba(224, 184, 95, 0.8), inset 0 0 10px rgba(0, 0, 0, 0.5), 0 0 20px var(--arcane-glow-shadow); }
+    }
+    @keyframes target-lock-pulse {
+        0%, 100% { background: rgba(118, 221, 251, 0.1); border-color: var(--arcane-glow); box-shadow: 0 0 10px var(--arcane-glow-shadow); }
+        50% { background: rgba(118, 221, 251, 0.2); border-color: #fff; box-shadow: 0 0 20px #fff, 0 0 10px var(--arcane-glow-shadow); }
+    }
+    @keyframes bar-flow {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(200%); }
+    }
+
+    #battle-ui-wrapper {
+        max-width: 900px; margin: 10px auto; padding: 12px;
+        background-color: var(--arcane-bg);
+        background-image: linear-gradient(135deg, rgba(58, 74, 107, 0.3) 0%, rgba(0,0,0,0) 60%),
+                          radial-gradient(ellipse at bottom, rgba(192, 149, 42, 0.1) 0%, rgba(0,0,0,0) 70%),
+                          linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+                          url('https://www.transparenttextures.com/patterns/dark-matter.png');
+        border: 2px solid var(--accent-gold-battle); border-radius: 8px;
+        font-family: var(--battle-font-primary); color: var(--text-light);
+        font-size: 14px; line-height: 1.6; display: flex; flex-direction: column;
+        gap: 12px; 
+        animation: pulse-glow-battle 5s infinite ease-in-out;
+        box-shadow: 0 0 20px rgba(192, 149, 42, 0.6), inset 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    #battle-ui-wrapper .combatant-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    #battle-ui-wrapper .team {
+        display: flex; flex-direction: column; gap: 8px; padding: 10px;
+        background: rgba(10,10,15,0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px;
+    }
+    #battle-ui-wrapper .team-title {
+        font-family: var(--battle-font-secondary);
+        font-weight: 700; font-size: 1.6em; 
+        color: var(--accent-gold-light-battle);
+        text-align: center; border-bottom: 1px solid var(--accent-gold-battle);
+        padding-bottom: 5px; margin-bottom: 5px; text-shadow: 0 0 8px var(--accent-gold-battle);
+    }
+    #battle-ui-wrapper .combatant-bar {
+        padding: 8px 12px; 
+        background: var(--arcane-panel-bg);
+        border: 1px solid var(--arcane-border);
+        border-radius: 4px; cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    #battle-ui-wrapper .combatant-bar:hover { 
+        background: rgba(118, 221, 251, 0.1); 
+        border-color: var(--arcane-glow);
+    }
+    #battle-ui-wrapper .combatant-bar.selected { 
+        animation: target-lock-pulse 2s infinite ease-in-out;
+    }
+    #battle-ui-wrapper .combatant-header { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 1.1em; margin-bottom: 6px; }
+    #battle-ui-wrapper .combatant-name { font-family: var(--battle-font-secondary); color: var(--text-light); text-shadow: 1px 1px 2px #000; }
+    #battle-ui-wrapper .combatant-type { font-size: 0.8em; color: var(--text-secondary-battle); }
+    #battle-ui-wrapper .stat-bars { display: flex; flex-direction: column; gap: 4px; }
+    #battle-ui-wrapper .stat-bar { width: 100%; height: 16px; background-color: var(--bar-bg); border: 1px solid #111; border-radius: 3px; position: relative; overflow: hidden; }
+    #battle-ui-wrapper .stat-bar-value::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 50%; height: 100%;
+        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+        animation: bar-flow 3s infinite linear;
+    }
+    #battle-ui-wrapper .stat-bar-value { height: 100%; transition: width 0.5s ease; position: absolute; top: 0; left: 0; }
+    #battle-ui-wrapper .stat-bar-value.hp { background: linear-gradient(90deg, var(--hp-color) 0%, var(--hp-color-light) 100%); }
+    #battle-ui-wrapper .stat-bar-value.mp { background: linear-gradient(90deg, var(--mp-color) 0%, var(--mp-color-light) 100%); }
+    #battle-ui-wrapper .stat-bar-text { position: absolute; width: 100%; text-align: center; font-size: 11px; font-weight: 700; color: white; text-shadow: 1px 1px 2px #000, 0 0 3px #000; line-height: 14px; }
+    #battle-ui-wrapper .stat-bar-text .label { font-weight: 500; }
+    #battle-ui-wrapper .action-panel { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; min-height: 200px; }
+    #battle-ui-wrapper .tab-panel { display: flex; flex-direction: column; background: rgba(10,10,15,0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; overflow: hidden; }
+    #battle-ui-wrapper .tabs { display: flex; background: var(--arcane-panel-bg); }
+    #battle-ui-wrapper .tab-button {
+        flex: 1; padding: 10px; background: transparent; border: none; border-bottom: 3px solid transparent;
+        color: var(--text-secondary-battle); font-family: var(--battle-font-secondary);
+        font-size: 1.2em; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+        text-shadow: 1px 1px 2px #000; 
+    }
+    #battle-ui-wrapper .tab-button:hover { 
+        color: var(--text-light); 
+        background: rgba(118, 221, 251, 0.1);
+    }
+    #battle-ui-wrapper .tab-button.active-tab { 
+        color: var(--accent-gold-light-battle);
+        border-bottom-color: var(--accent-gold-battle);
+        background: rgba(0,0,0,0.2); 
+    }
+    #battle-ui-wrapper #tab-content-area { padding: 10px; height: 160px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    #battle-ui-wrapper .action-item-button {
+        display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 12px;
+        background: #2b344b;
+        border: 1px solid var(--arcane-border);
+        border-radius: 4px;
+        color: var(--text-light); cursor: pointer; transition: all 0.3s ease; text-align: left;
+    }
+    #battle-ui-wrapper .action-item-button:hover { 
+        background: rgba(118, 221, 251, 0.15);
+        border-color: var(--arcane-glow); 
+    }
+    #battle-ui-wrapper .action-item-name { font-weight: 700; font-size: 1.05em; }
+    #battle-ui-wrapper .action-item-cost { font-size: 0.9em; color: var(--mp-color-light); font-weight: 500; }
+    #battle-ui-wrapper .action-item-count { font-size: 0.9em; color: var(--text-secondary-battle); font-weight: 500; }
+    #battle-ui-wrapper .action-item-desc { font-size: 0.85em; color: var(--text-secondary-battle); width: 100%; margin-top: 4px; }
+    #battle-ui-wrapper .core-actions { display: flex; flex-direction: column; gap: 8px; }
+    #battle-ui-wrapper .core-action-button {
+        width: 100%; height: 100%; padding: 15px;
+        font-family: var(--battle-font-secondary); font-size: 1.4em; font-weight: 700;
+        background-image: linear-gradient(rgba(255,255,255,0.05), rgba(0,0,0,0.1));
+        background-color: rgba(10, 15, 25, 0.6);
+        color: var(--text-light);
+        border: 2px solid var(--arcane-border);
+        border-radius: 6px; cursor: pointer; transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        text-shadow: 0 0 5px var(--arcane-glow-shadow); 
+    }
+    #battle-ui-wrapper .core-action-button:hover {
+        background-color: rgba(118, 221, 251, 0.2); 
+        color: white;
+        border-color: var(--arcane-glow);
+        box-shadow: 0 0 10px var(--arcane-glow), 0 0 15px var(--arcane-glow-shadow), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    }
+    #battle-ui-wrapper .pre-input-area { display: flex; flex-direction: column; gap: 8px; }
+    #battle-ui-wrapper #pre-input-bar { 
+        width: 100%; min-height: 60px; 
+        background: var(--log-bg);
+        border: 1px solid var(--arcane-border); 
+        border-radius: 4px; color: var(--text-light); 
+        font-family: var(--battle-font-primary); font-size: 1em; padding: 8px; resize: vertical; 
+    }
+    #battle-ui-wrapper #start-turn-button {
+        width: 100%; padding: 12px; font-family: var(--battle-font-secondary);
+        font-size: 1.5em; font-weight: 700; 
+        background: var(--accent-gold-battle); 
+        color: var(--text-dark);
+        border: none; border-radius: 6px; cursor: pointer; transition: all 0.3s ease;
+        box-shadow: 0 0 15px var(--accent-gold-battle);
+    }
+    #battle-ui-wrapper #start-turn-button:hover { 
+        background: var(--accent-gold-light-battle); 
+        color: #000; 
+        box-shadow: 0 0 25px var(--accent-gold-light-battle); 
+    }
+    #battle-ui-wrapper .battle-log-area { 
+        height: 150px; 
+        background: var(--log-bg);
+        border: 1px solid var(--arcane-border); 
+        border-radius: 6px; padding: 12px; overflow-y: auto; 
+        white-space: pre-line; font-size: 0.9em; color: var(--text-light); 
+    }
+    #battle-ui-wrapper #end-battle-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--overlay-bg); display: flex; justify-content: center; align-items: center; z-index: 100; }
+    #battle-ui-wrapper #end-battle-button {
+        padding: 20px 40px; font-family: var(--battle-font-secondary);
+        font-size: 2em; font-weight: 700; 
+        background: var(--accent-gold-battle); 
+        color: var(--text-dark);
+        border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;
+        box-shadow: 0 0 20px var(--accent-gold-battle);
+    }
+    #battle-ui-wrapper #end-battle-button:hover { background: var(--accent-gold-light-battle); color: #000; transform: scale(1.05); }
+    /* --- [ End of Battle UI v15 ] --- */
+</style>
+</head>
+<body class="status-mode">
+    <div id="chessboard-container-wrapper">
+        </div>
+
+    
+    <div id="battle-ui-wrapper" class="hidden">
+        <div class="combatant-area">
+            <div class="team" id="player-combatants-area">
+                <div class="team-title">光の盟友</div>
+                <p id="player-combatants-placeholder" class="empty-state-text">(等待盟友响应召唤...)</p>
+            </div>
+            <div class="team" id="enemy-combatants-area">
+                <div class="team-title">深淵の敵</div>
+                <p id="enemy-combatants-placeholder" class="empty-state-text">(侦测到深渊波动...)</p>
+            </div>
+        </div>
+        <div class="action-panel">
+            <div class="tab-panel">
+                <div class="tabs">
+                    <button id="tab-btn-skills" class="tab-button" onclick="window.battle_ui_events.selectTab('skills')">
+                        <i class="fa-solid fa-magic-wand-sparkles"></i> 奥義
+                    </button>
+                    <button id="tab-btn-bags" class="tab-button" onclick="window.battle_ui_events.selectTab('bags')">
+                        <i class="fa-solid fa-sack"></i> 次元袋
+                    </button>
+                </div>
+                <div id="tab-content-area">
+                    <p class="empty-state-text">(请指定咏唱者...)</p>
+                </div>
+            </div>
+            <div class="core-actions">
+                
+                <button class="core-action-button" onclick="window.battle_ui_events.coreAction('攻击')">
+                    <i class="fa-solid fa-khanda"></i> 斬撃
+                </button>
+                <button class="core-action-button" onclick="window.battle_ui_events.coreAction('防御')">
+                    <i class="fa-solid fa-shield-halved"></i> 守護
+                </button>
+                <button class="core-action-button" onclick="window.battle_ui_events.coreAction('逃跑')">
+                    <i class="fa-solid fa-person-running"></i> 転移
+                </button>
+            </div>
+        </div>
+        <div class="pre-input-area">
+            <textarea id="pre-input-bar" placeholder="魔導書にルーンを刻む..."></textarea>
+            <button id="start-turn-button" onclick="window.battle_ui_events.startTurn()">
+                <i class="fa-solid fa-play"></i> 運命を紡ぐ
+            </button>
+        </div>
+        <div class="battle-log-area" id="battle-log-content">
+            (戦いの叙事詩が記される...)
+        </div>
+        <div id="end-battle-overlay" class="hidden">
+            <button id="end-battle-button" onclick="window.battle_ui_events.endBattle()">
+                <i class="fa-solid fa-flag-checkered"></i> 凱旋
+            </button>
+        </div>
+    </div>
+    
+
+<script>
+    (function() {
+        if (window.MASTER_UI_INITIALIZED) return;
+        window.MASTER_UI_INITIALIZED = true;
+        console.log("--- [皇家典籍 V17.2] 脚本初始化 (已修复 //reason 显示问题 & 任务软删除) ---"); 
+
+        // --- [ 1. GLOBAL HELPERS ] ---
+        window.last_stat_data = {}; 
+        
+        let selectedParticipantKey = 'player'; 
+        let currentCombatTab = 'skills'; 
+
+        let currentInventoryFilter = '全部';
+        let currentProtagonistTab = 'core'; 
+        
+        const isObject = (item) => (item && typeof item === 'object' && !Array.isArray(item));
+        
+        const setToggle = (id, visible) => {
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('hidden', !visible);
+        };
+        
+        // 【修正 1】DeepMerge 现在会正确跳过 //reason，并且允许 null 值覆盖 (用于任务删除)
+        const deepMerge = (target, source) => {
+            let output = Object.assign({}, target);
+            if (isObject(target) && isObject(source)) {
+                Object.keys(source).forEach(key => {
+                    if (key === '$meta' || key === '//reason') return; // 过滤 //reason
+                    if (isObject(source[key])) {
+                        if (!(key in target) || !isObject(target[key])) { Object.assign(output, { [key]: source[key] }); } 
+                        else { output[key] = deepMerge(target[key], source[key]); }
+                    } else { Object.assign(output, { [key]: source[key] }); }
+                });
+            }
+            return output;
+        };
+        
+        const SafeGetValue = (obj, path, defaultValue) => {
+            try {
+                const keys = path.split('.');
+                let current = obj;
+                for (let i = 0; i < keys.length; i++) {
+                    const key = keys[i];
+                    if (current === null || typeof current !== 'object') { return defaultValue; }
+                    const match = key.match(/^(.+?)\[(\d+)\]$/);
+                    if (match) {
+                        const arrayKey = match[1];
+                        const index = parseInt(match[2], 10);
+                        if (current.hasOwnProperty(arrayKey) && Array.isArray(current[arrayKey]) && index >= 0 && index < current[arrayKey].length) {
+                            current = current[arrayKey][index];
+                        } else { return defaultValue; }
+                    } else if (current.hasOwnProperty(key)) {
+                        current = current[key];
+                    } else { return defaultValue; }
+                }
+                return current === undefined ? defaultValue : current;
+            } catch (error) {
+                console.error(`SafeGetValue CRITICAL ERROR for path "${path}" in obj:`, obj, 'Error:', error);
+                return defaultValue;
+            }
+        };
+
+        const royal_updateProgressBar = (barId, current, max, color, shadowColor = null) => { 
+            const bar = document.getElementById(barId); 
+            if (bar) { 
+                const percentage = max > 0 ? (current / max) * 100 : 0; 
+                bar.style.width = `${Math.max(0, Math.min(100, percentage))}%`; 
+            } 
+        };
+        
+        const setContent = (id, content) => { const el = document.getElementById(id); if (el) el.innerHTML = content; };
+
+        const defaultEmptyState = {
+          "UI状态": { "当前界面": [ "日常", ""] },
+          "战斗状态": [ { "in_combat": [ false, "" ], "enemies": {}, "allies": {}, "combat_log": [] } ],
+          "主角": { "姓名": [ "<user>", "" ], "力量层次": [ "(未定义)", "" ], "资源": {}, "装备": [], "状态效果": [], "技能": [], "性爱统计": [{"是否处男":[true, ""], "交合次数":[0, ""], "性癖":[]}] },
+          "世界": { "时间": [ "(未设定)", "" ], "地点": [ "(未知)", "" ], "邻近地点": [], "天气": [ "无", "" ], "当前声望": [ 0, "" ] },
+          "人脉关系": [ {} ],
+          "任务列表": [ {} ],
+          "财产": { "货币": {}, "背包": [] },
+          "命运系统": { "命运点数": [ 0, "" ], "红线对象": [ {} ] },
+          "今日新闻": { "金狮快讯": [ "" ], "酒馆留言板": [ "" ], "世界真奇妙": [ "" ], "莉莉丝的午后茶会": [ "" ] },
+          "世界图鉴": [ {} ]
+        };
+
+
+        // --- [ 2. MVU 交互助手 ] ---
+        window.SillyTavern_MVU_Set = (path, old_val, new_val, comment = "UI: Set") => {
+            if (typeof Mvu === 'undefined') return console.error("[MasterUI] Mvu not found!");
+            Mvu.setVariable(path, old_val, new_val, comment);
+        };
+        window.SillyTavern_TriggerSlash = (command) => {
+            if (typeof triggerSlash === 'function') {
+                triggerSlash(command);
+            } else {
+                alert(`Error: triggerSlash function not found. Cannot send command:\n${command}`);
+            }
+        };
+
+        // --- [ 3. 日常 UI 渲染器 (V17 Updated) ] ---
+        
+        function renderStatusUI(data) { 
+            const container = document.getElementById('chessboard-container-wrapper'); 
+            if (!container) return;
+            container.className = 'status-container'; 
+            
+            const sectionIcons = { '主角': 'fa-book-skull', '探索附近': 'fa-compass', '人脉关系': 'fa-users-viewfinder', '命运系统': 'fa-hands-holding-circle', '当前任务': 'fa-scroll', '财产': 'fa-gem', '今日新闻': 'fa-newspaper', '世界图鉴': 'fa-atlas' }; 
+            const sectionOrder = ['主角', '探索附近', '人脉关系', '命运系统', '当前任务', '财产', '今日新闻', '世界图鉴']; 
+            let sectionsHtml = sectionOrder.map(title => { const iconClass = sectionIcons[title] || 'fa-question-circle'; const sectionId = { '主角': 'protagonist-section', '探索附近': 'map-section', '人脉关系': 'contacts-section', '命运系统': 'destiny-section', '当前任务': 'tasks-section', '财产': 'assets-section', '今日新闻': 'news-section', '世界图鉴': 'codex-section' }[title]; const contentPadding = (title === '主角') ? 'padding: 5px 15px 15px 15px;' : ''; return `<details class="section"> <summary><i class="fa-solid ${iconClass} fa-fw summary-icon"></i>${title}<span class="arrow-toggle">&gt;</span></summary> <div class="section-content" id="${sectionId}" style="${contentPadding}"></div> </details>`; }).join(''); 
+            container.innerHTML = `<div class="world-info-box" id="world-info-box"></div> ${sectionsHtml}`; 
+            
+            const worldData = SafeGetValue(data, '世界', {}); 
+            populateWorldInfo(worldData); 
+            populateProtagonist(SafeGetValue(data, '主角', {})); 
+            populateMap(worldData); 
+            populateDestinyAndContacts(data); 
+            const tasksContainer = SafeGetValue(data, '任务列表', []); 
+            const tasksData = Array.isArray(tasksContainer) && tasksContainer.length > 0 ? tasksContainer[0] : {}; 
+            populateQuests(tasksData); 
+            populateAssets(SafeGetValue(data, '财产', {})); 
+            populateNews(SafeGetValue(data, '今日新闻', {})); 
+            populateCodex(SafeGetValue(data, '世界图鉴', [])); 
+        }
+        function populateWorldInfo(worldData) { setContent('world-info-box', ` <div><p><span class="property-name"><i class="fa-solid fa-clock icon"></i> 时间:</span> <span class="value-main">${SafeGetValue(worldData, '时间[0]', '未知')}</span></p></div> <div><p><span class="property-name"><i class="fa-solid fa-map-location-dot icon"></i> 地点:</span> <span class="value-main">${SafeGetValue(worldData, '地点[0]', '未知')}</span></p></div> <div><p><span class="property-name"><i class="fa-solid fa-cloud-sun icon"></i> 天气:</span> <span class="value-main">${SafeGetValue(worldData, '天气[0]', '未知')}</span></p></div> <div><p><span class="property-name"><i class="fa-solid fa-person-rays icon"></i> 声望:</span> <span class="value-main">${SafeGetValue(worldData, '当前声望[0]', 0)}</span></p></div>`); }
+        
+        function populateProtagonist(data) { 
+            const resources = SafeGetValue(data, '资源', {}); 
+            const equipmentContainer = SafeGetValue(data, '装备', []); 
+            const equipment = Array.isArray(equipmentContainer) && equipmentContainer.length > 0 ? equipmentContainer[0] : {}; 
+            const statusEffectsContainer = SafeGetValue(data, '状态效果', []); 
+            const statusEffects = Array.isArray(statusEffectsContainer) && statusEffectsContainer.length > 0 ? statusEffectsContainer[0] : {}; 
+            const skillsContainer = SafeGetValue(data, '技能', []); 
+            const skills = Array.isArray(skillsContainer) && skillsContainer.length > 0 ? skillsContainer[0] : {}; 
+            const sexStatsContainer = SafeGetValue(data, '性爱统计', []);
+            const sexStats = Array.isArray(sexStatsContainer) && sexStatsContainer.length > 0 ? sexStatsContainer[0] : {};
+
+            const hp = SafeGetValue(resources, '生命值[0]', 0); const maxHp = SafeGetValue(resources, '生命值上限[0]', 1); 
+            const mp = SafeGetValue(resources, '法力值[0]', 0); const maxMp = SafeGetValue(resources, '法力值上限[0]', 1); 
+            const sp = SafeGetValue(resources, '体力值[0]', 0); const maxSp = SafeGetValue(resources, '体力值上限[0]', 1); 
+            
+            // 【修正 2】过滤状态效果列表中的 //reason
+            const effectKeys = typeof statusEffects === 'object' && statusEffects !== null ? Object.keys(statusEffects).filter(k => k !== '$meta' && k !== '//reason') : []; 
+            // 【修正 3】过滤技能列表中的 //reason
+            const skillKeys = typeof skills === 'object' && skills !== null ? Object.keys(skills).filter(k => k !== '$meta' && k !== '//reason') : []; 
+            const emptyIcon = `<i class="fa-solid fa-scroll fa-xs" style="opacity: 0.6; margin-right: 5px;"></i>`; 
+
+            const resourcesHtml = `<div class="detail-grid" style="gap: 6px;"> <div class="resource-grid-item" style="border: none; padding-bottom: 0;"> <div class="resource-row"> <span class="icon" style="color:var(--hp-color);"><i class="fa-solid fa-heart"></i></span> <div class="progress-bar-container"><div id="main-hp-bar" class="progress-bar-value"></div></div> <span class="value-main">${hp} / ${maxHp}</span> </div> </div> <div class="resource-grid-item" style="border: none; padding-bottom: 0;"> <div class="resource-row"> <span class="icon" style="color:var(--mp-color);"><i class="fa-solid fa-wand-sparkles"></i></span> <div class="progress-bar-container"><div id="main-mp-bar" class="progress-bar-value"></div></div> <span class="value-main">${mp} / ${maxMp}</span> </div> </div> <div class="resource-grid-item" style="border: none; padding-bottom: 0;"> <div class="resource-row"> <span class="icon" style="color:var(--stamina-color);"><i class="fa-solid fa-person-running"></i></span> <div class="progress-bar-container"><div id="main-sp-bar" class="progress-bar-value"></div></div> <span class="value-main">${sp} / ${maxSp}</span> </div> </div> </div>`; 
+            
+            const staticHtml = `<hr> <div class="detail-grid"> <div class="detail-grid-item"><span class="icon"><i class="fa-solid fa-id-card"></i></span><span class="property-name">姓名</span><span class="value-main">${SafeGetValue(data, '姓名[0]', '未设定')}</span></div> <div class="detail-grid-item"><span class="icon"><i class="fa-solid fa-shield-halved"></i></span><span class="property-name">身份</span><span class="value-main">${SafeGetValue(data, '身份[0]', '无')}</span></div> <div class="detail-grid-item"><span class="icon"><i class="fa-solid fa-khanda"></i></span><span class="property-name">力量层次</span><span class="value-main">${SafeGetValue(data, '力量层次[0]', '凡人')}</span></div> </div>`; 
+            
+            const equipmentHtml = `<div class="detail-grid"> <div class="detail-grid-item"><span class="icon"><i class="fa-solid fa-gavel"></i></span><span class="property-name">武器</span><span class="value-main">${SafeGetValue(equipment, '武器[0]', '(无)')}</span></div> <div class="detail-grid-item"><span class="icon"><i class="fa-solid fa-shirt"></i></span><span class="property-name">盔甲</span><span class="value-main">${SafeGetValue(equipment, '盔甲[0]', '(无)')}</span></div> <div class="detail-grid-item"><span class="icon"><i class="fa-solid fa-ring"></i></span><span class="property-name">饰品</span><span class="value-main">${SafeGetValue(equipment, '饰品[0]', '(无)')}</span></div> <div class="detail-grid-item"><span class="icon"><i class="fa-solid fa-socks"></i></span><span class="property-name">内衣</span><span class="value-main">${SafeGetValue(equipment, '内衣[0]', '(无)')}</span></div> <div class="detail-grid-item"><span class="icon"><i class="fa-solid fa-link"></i></span><span class="property-name">特殊</span><span class="value-main">${SafeGetValue(equipment, '特殊[0]', '(无)')}</span></div> </div>`; 
+            
+            const effectsHtml = `<div id="status-effects-list" style="padding: 5px 0;"> ${effectKeys.length > 0 ? effectKeys.map(key => { const effect = statusEffects[key]; return `<div class="item-row"> <div><b>${SafeGetValue(effect, '名称[0]', key)}</b><br><small>${SafeGetValue(effect, '描述[0]', '...')}</small></div> <span class="value-main">${SafeGetValue(effect, '剩余时间[0]', '')}</span> </div>`; }).join('') : `<p class="empty-state-text">${emptyIcon}(无)</p>`} </div>`; 
+            
+            const skillsHtml = `<div id="skills-list" style="padding: 5px 0;"> ${skillKeys.length > 0 ? skillKeys.map(key => { const skill = skills[key]; const cost = SafeGetValue(skill, 'cost[0]', ''); const tagsArray = SafeGetValue(skill, 'tags[0]', []); const tags = Array.isArray(tagsArray) ? tagsArray.map(tag => `<span class="tag">${tag}</span>`).join(' ') : ''; return `<div class="item-row"> <div><b>${SafeGetValue(skill, '名称[0]', key)}</b> (Lv.${SafeGetValue(skill, '等级[0]', 1)}) ${tags}<br><small>${SafeGetValue(skill, '描述[0]', '...')}</small></div> <span class="value-main">${cost}</span> </div>`; }).join('') : `<p class="empty-state-text">${emptyIcon}(无技能)</p>`} </div>`; 
+            
+            const isVirgin = SafeGetValue(sexStats, '是否处男[0]', SafeGetValue(sexStats, '是否处女[0]', true));
+            const fetishesArray = SafeGetValue(sexStats, '性癖', []);
+            const fetishes = (Array.isArray(fetishesArray) ? fetishesArray[0] : []) || [];
+            const privacyHtml = `
+            <div class="detail-grid">
+                <div class="detail-grid-item">
+                    <span class="icon" style="color: var(--accent-pink)"><i class="fa-solid ${isVirgin ? 'fa-lock' : 'fa-lock-open'}"></i></span>
+                    <span class="property-name">贞洁</span>
+                    <span class="value-main">${isVirgin ? '保留' : '已失'}</span>
+                </div>
+                <div class="detail-grid-item">
+                    <span class="icon" style="color: var(--accent-pink)"><i class="fa-solid fa-calculator"></i></span>
+                    <span class="property-name">交合次数</span>
+                    <span class="value-main">${SafeGetValue(sexStats, '交合次数[0]', 0)}</span>
+                </div>
+            </div>
+            <hr>
+            <p><span class="property-name"><i class="fa-solid fa-mask icon"></i> 性癖觉醒:</span></p>
+            <div style="margin-top:5px;">${Array.isArray(fetishes) && fetishes.length > 0 ? fetishes.map(f => `<span class="erotic-tag">${f}</span>`).join('') : '<span style="font-size:0.9em; opacity:0.7;">(暂无特殊性癖)</span>'}</div>
+            `;
+
+            const tabsHtml = `
+            <div class="protagonist-tabs"> 
+                <div class="protagonist-tab ${currentProtagonistTab === 'core' ? 'active' : ''}" data-tab="core">核心</div> 
+                <div class="protagonist-tab ${currentProtagonistTab === 'equip' ? 'active' : ''}" data-tab="equip">装备</div> 
+                <div class="protagonist-tab ${currentProtagonistTab === 'skills' ? 'active' : ''}" data-tab="skills">技能</div> 
+                <div class="protagonist-tab ${currentProtagonistTab === 'effects' ? 'active' : ''}" data-tab="effects">状态</div>
+                <div class="protagonist-tab ${currentProtagonistTab === 'privacy' ? 'active' : ''}" data-tab="privacy" style="color: var(--accent-pink);">隐私</div> 
+            </div> 
+            <div class="protagonist-tab-content ${currentProtagonistTab !== 'core' ? 'hidden' : ''}" id="protagonist-core"> ${resourcesHtml} ${staticHtml} </div> 
+            <div class="protagonist-tab-content ${currentProtagonistTab !== 'equip' ? 'hidden' : ''}" id="protagonist-equip"> ${equipmentHtml} </div> 
+            <div class="protagonist-tab-content ${currentProtagonistTab !== 'skills' ? 'hidden' : ''}" id="protagonist-skills"> ${skillsHtml} </div> 
+            <div class="protagonist-tab-content ${currentProtagonistTab !== 'effects' ? 'hidden' : ''}" id="protagonist-effects"> ${effectsHtml} </div>
+            <div class="protagonist-tab-content ${currentProtagonistTab !== 'privacy' ? 'hidden' : ''}" id="protagonist-privacy"> ${privacyHtml} </div>`; 
+            
+            setContent('protagonist-section', tabsHtml); 
+            royal_updateProgressBar('main-hp-bar', hp, maxHp); royal_updateProgressBar('main-mp-bar', mp, maxMp); royal_updateProgressBar('main-sp-bar', sp, maxSp); 
+        }
+
+        function populateMap(worldData) { const locationsArray = SafeGetValue(worldData, '邻近地点[0]', []) || []; const validLocations = Array.isArray(locationsArray) ? locationsArray.filter(loc => Array.isArray(loc) && loc.length > 0 && typeof loc[0] === 'string' && loc[0].trim() !== '' && loc[0] !== '未知地点') : []; const emptyIcon = `<i class="fa-solid fa-map-signs fa-xs" style="opacity: 0.6; margin-right: 5px;"></i>`; const content = validLocations.map(loc => { const locName = loc[0]; const locDesc = loc.length > 1 && typeof loc[1] === 'string' ? loc[1] : ''; return `<div class="map-location"> <div class="location-text"><b>${locName}</b><br><small>${locDesc}</small></div> <button class="action-button" data-action="travel" data-location="${locName}" style="margin-left: auto; padding: 3px 6px; font-size: 0.8em;"> <i class="fa-solid fa-shoe-prints"></i>前往 </button> </div>`; }).join(''); setContent('map-section', content || `<p class="empty-state-text">${emptyIcon}附近似乎没什么可探索的。</p>`); }
+        
+        function populateDestinyAndContacts(data) { 
+            const contactsContainer = SafeGetValue(data, '人脉关系', []); 
+            const contacts = Array.isArray(contactsContainer) && contactsContainer.length > 0 ? contactsContainer[0] : {}; 
+            // 【修正 4】过滤人脉列表中的 //reason
+            const contactKeys = typeof contacts === 'object' && contacts !== null ? Object.keys(contacts).filter(k => k !== '$meta' && k !== '//reason') : []; 
+            const destinyData = SafeGetValue(data, '命运系统', {}); 
+            const redlineCharsContainer = SafeGetValue(destinyData, '红线对象', []); 
+            const redlineChars = Array.isArray(redlineCharsContainer) && redlineCharsContainer.length > 0 ? redlineCharsContainer[0] : {}; 
+            // 【修正 5】过滤红线对象列表中的 //reason
+            const redlineKeys = typeof redlineChars === 'object' && redlineChars !== null ? Object.keys(redlineChars).filter(k => k !== '$meta' && k !== '//reason') : []; 
+            const emptyIcon = `<i class="fa-solid fa-scroll fa-xs" style="opacity: 0.6; margin-right: 5px;"></i>`; 
+            
+            let contactsHtml = contactKeys.length > 0 ? contactKeys.map(k => createCharacterCardHTML(contacts[k], k, false)).join('') : `<p class="empty-state-text">${emptyIcon}(无人脉)</p>`; 
+            let destinyHtml = `<div class="detail-grid-item" style="grid-template-columns: 20px auto 1fr; align-items: center; border: none; padding-bottom: 5px;"><span class="icon"><i class="fa-solid fa-hand-holding-heart"></i></span><span class="property-name">命运点数 FP</span> <span class="value-main fp-value">${SafeGetValue(destinyData, '命运点数[0]', 0)}</span></div><hr>` + (redlineKeys.length > 0 ? redlineKeys.map(k => createCharacterCardHTML(redlineChars[k], k, true)).join('') : `<p class="empty-state-text">${emptyIcon}(无红线对象)</p>`); 
+            setContent('contacts-section', contactsHtml); setContent('destiny-section', destinyHtml); [...contactKeys, ...redlineKeys].forEach(key => { const char = contacts[key] || redlineChars[key]; if (typeof char === 'object' && char !== null) { const barId = `char-favor-bar-${key}`; const fav = SafeGetValue(char, '好感度[0]', '0/1000'); const [cur, max] = String(fav).split(' ')[0].split('/').map(Number); royal_updateProgressBar(barId, cur || 0, max || 1000); } }); 
+        }
+        
+        // NPC卡片渲染 (包含岁月变化与性征描述)
+        function createCharacterCardHTML(npcData, npcKey, isRedLine) { 
+            const name = SafeGetValue(npcData, '姓名[0]', '未知角色'); 
+            const affectionText = String(SafeGetValue(npcData, '好感度[0]', '0/1000')).split(' ')[0]; 
+            const barId = `char-favor-bar-${npcKey}`; 
+            
+            const properties = [ 
+                { name: '战力层级', value: SafeGetValue(npcData, '战力层级[0]'), icon: 'fa-solid fa-bolt' }, 
+                { name: '等级', value: SafeGetValue(npcData, '等级[0]'), icon: 'fa-solid fa-dragon' }, 
+                { name: '年龄', value: SafeGetValue(npcData, '年龄[0]'), icon: 'fa-solid fa-hourglass-half' }, 
+                { name: '种族', value: SafeGetValue(npcData, '种族[0]'), icon: 'fa-solid fa-paw' }, 
+                { name: '身份', value: SafeGetValue(npcData, '身份[0]'), icon: 'fa-solid fa-shield-halved' }, 
+                { name: '职业', value: SafeGetValue(npcData, '职业[0]'), icon: 'fa-solid fa-briefcase' }, 
+                { name: '衣着', value: SafeGetValue(npcData, '衣着[0]'), icon: 'fa-solid fa-shirt' },
+                { name: '装备', value: SafeGetValue(npcData, '装备[0]'), icon: 'fa-solid fa-khanda' },
+                { name: '性格', value: SafeGetValue(npcData, '性格[0]'), icon: 'fa-solid fa-brain' }, 
+                { name: '喜爱', value: SafeGetValue(npcData, '喜爱[0]'), icon: 'fa-solid fa-star' }, 
+                { name: '外貌', value: SafeGetValue(npcData, '外貌[0]'), icon: 'fa-solid fa-image-portrait' }
+            ]; 
+            
+            const innerThoughts = SafeGetValue(npcData, '内心想法[0]');
+            let thoughtsHtml = '';
+            if (innerThoughts && innerThoughts !== '未知' && innerThoughts !== '') {
+                thoughtsHtml = `<div class="inner-thought-block"><i class="fa-solid fa-comment-dots" style="opacity:0.7; margin-right:5px;"></i> ${innerThoughts}</div>`;
+            }
+
+            const bodyProps = [
+                { key: '奶子', icon: 'fa-solid fa-circle-dot', name: '奶子' },
+                { key: '小穴', icon: 'fa-solid fa-spa', name: '小穴' },
+                { key: '屁眼', icon: 'fa-solid fa-bullseye', name: '屁眼' },
+                { key: '玉足', icon: 'fa-solid fa-shoe-prints', name: '玉足' }
+            ];
+            let bodyHtml = '';
+            bodyProps.forEach(prop => {
+                const val = SafeGetValue(npcData, `${prop.key}[0]`);
+                if (val && val !== '未知' && val !== '') {
+                    bodyHtml += `<div style="margin-bottom:6px;"><span class="property-name" style="color:var(--accent-pink); font-size:0.75em;"><i class="${prop.icon}"></i> ${prop.name}</span><div class="long-text-block">${val}</div></div>`;
+                }
+            });
+
+            let eroticStatsHtml = '';
+            const isVirgin = SafeGetValue(npcData, '是否处女[0]');
+            const sexCount = SafeGetValue(npcData, '交合次数[0]');
+            const sexExp = SafeGetValue(npcData, '性爱经验[0]');
+            const fetishRaw = SafeGetValue(npcData, '性癖', []); 
+            let fetishArr = [];
+            if (Array.isArray(fetishRaw)) {
+                 if (fetishRaw.length > 0 && Array.isArray(fetishRaw[0])) fetishArr = fetishRaw[0]; 
+                 else if (fetishRaw.length > 0 && typeof fetishRaw[0] === 'string') fetishArr = fetishRaw; 
+            }
+
+            if (isVirgin !== undefined || sexCount !== undefined || (fetishArr.length > 0)) {
+                eroticStatsHtml = `<hr style="border-color:var(--accent-pink); opacity:0.3;">`;
+                if (isVirgin !== undefined) eroticStatsHtml += `<span class="tag" style="background:${isVirgin?'#4CAF50':'#D81B60'}">${isVirgin ? '处女' : '非处'}</span> `;
+                if (sexCount !== undefined) eroticStatsHtml += `<span class="tag" style="background:#6D4C41">次数: ${sexCount}</span> `;
+                if (sexExp) eroticStatsHtml += `<div class="long-text-block" style="font-style:italic; margin-top:5px;">${sexExp}</div>`;
+                if (fetishArr.length > 0) {
+                    eroticStatsHtml += `<div style="margin-top:5px;"><span class="property-name" style="font-size:0.7em;">性癖: </span>${fetishArr.map(f => `<span class="erotic-tag">${f}</span>`).join('')}</div>`;
+                }
+            }
+
+            let memoryHtml = '';
+            if (isRedLine) {
+                const memories = SafeGetValue(npcData, '记忆回廊', {});
+                // 【修正 6】过滤记忆回廊中的 //reason
+                const memoryKeys = Object.keys(memories).filter(k => k !== '$meta' && k !== '//reason');
+                if (memoryKeys.length > 0) {
+                    memoryHtml = `<hr><h4 style="font-size:0.9em; margin-bottom:5px; color:var(--accent-purple);"><i class="fa-solid fa-brain"></i> 记忆回廊</h4>`;
+                    memoryKeys.forEach(memKey => {
+                        const mem = memories[memKey];
+                        const mTitle = SafeGetValue(mem, '标题[0]', '未知记忆');
+                        const mDesc = SafeGetValue(mem, '描述[0]', '...');
+                        memoryHtml += `<details class="sub-section memory-entry" style="margin-bottom:4px; border-color:rgba(142,36,170,0.3);">
+                            <summary style="font-size:0.85em; padding:4px 8px;">${mTitle}</summary>
+                            <div class="sub-section-content" style="font-size:0.85em; color:#555;">${mDesc}</div>
+                        </details>`;
+                    });
+                }
+            }
+
+            return `
+            <details class="sub-section ${isRedLine ? 'is-redline' : ''}"> 
+                <summary>${name}<span class="arrow-toggle">&gt;</span></summary> 
+                <div class="sub-section-content"> 
+                    <div class="detail-grid"> 
+                        ${properties.map(p => `<div class="detail-grid-item"><span class="icon"><i class="${p.icon}"></i></span><span class="property-name">${p.name}</span><span class="value-main">${p.value || '未知'}</span></div>`).join('')} 
+                    </div> 
+                    ${thoughtsHtml}
+                    ${bodyHtml ? `<hr style="border-color:var(--accent-pink); opacity:0.3;"> <div style="color:var(--text-color);">${bodyHtml}</div>` : ''}
+                    ${eroticStatsHtml}
+                    ${memoryHtml}
+                    <hr> 
+                    <p style="text-align:center; margin-bottom: 3px;"><span class="property-name">好感度: ${affectionText}</span></p> 
+                    <div class="char-favor-bar-container"><div id="${barId}" class="char-favor-bar"></div></div> 
+                    <hr> 
+                    <p style="margin-bottom: 3px;"><span class="property-name">评价:</span><br><span style="font-style: italic; font-size: 0.9em; opacity: 0.9;">${SafeGetValue(npcData, '评价[0]', '暂无')}</span></p> 
+                </div> 
+            </details>`; 
+        }
+
+        // 【修正 7】任务系统：增加了对 null 任务的过滤（软删除支持）
+        function populateQuests(tasks) { 
+            // 强壮性检查
+            if (!tasks || typeof tasks !== 'object') {
+                 setContent('tasks-section', `<p class="empty-state-text"><i class="fa-solid fa-triangle-exclamation"></i> 任务数据异常</p>`);
+                 return;
+            }
+            
+            const taskKeys = Object.keys(tasks).filter(k => k !== '$meta' && k !== '//reason'); 
+            const emptyIcon = `<i class="fa-solid fa-scroll fa-xs" style="opacity: 0.6; margin-right: 5px;"></i>`; 
+            
+            const content = taskKeys.length > 0 ? taskKeys.map(k => { 
+                const task = tasks[k]; 
+                // [关键] 如果任务为 null (已被软删除)，则不渲染
+                if (!task || typeof task !== 'object') return ''; 
+                
+                const rewardObjContainer = SafeGetValue(task, '奖励', []); 
+                const rewardObj = Array.isArray(rewardObjContainer) && rewardObjContainer.length > 0 ? rewardObjContainer[0] : {}; 
+                let rewardParts = []; 
+                if (typeof rewardObj === 'object' && rewardObj !== null) { 
+                    const currency = SafeGetValue(rewardObj, '货币', {}); 
+                    if (typeof currency === 'object' && currency !== null) { 
+                        Object.keys(currency).forEach(cKey => { 
+                            const amount = SafeGetValue(currency, `${cKey}[0]`, 0); 
+                            if (amount > 0) { rewardParts.push(`${cKey} x${amount}`); } 
+                        }); 
+                    } 
+                    const items = SafeGetValue(rewardObj, '物品', {}); 
+                    if (typeof items === 'object' && items !== null) { 
+                        Object.keys(items).forEach(iKey => { 
+                            const amount = SafeGetValue(items, `${iKey}[0]`, 0); 
+                            if (amount > 0) { rewardParts.push(`${iKey} x${amount}`); } 
+                        }); 
+                    } 
+                    const exp = SafeGetValue(rewardObj, '经验[0]', 0); if (exp > 0) { rewardParts.push(`经验 x${exp}`); } 
+                    const fp = SafeGetValue(rewardObj, 'FP[0]', 0); if (fp > 0) { rewardParts.push(`FP x${fp}`); } 
+                } 
+                const rewardString = rewardParts.length > 0 ? rewardParts.join(', ') : '无'; 
+                return `<details class="sub-section"> <summary>${SafeGetValue(task, '标题[0]', `任务 ${k}`)}<span class="arrow-toggle">&gt;</span></summary> <div class="sub-section-content"> <p><b>发布者:</b> ${SafeGetValue(task, '发布者[0]', '未知')}</p> <p><b>目标:</b> ${SafeGetValue(task, '当前目标[0]', '...')}</p> <p><b>难度:</b> ${SafeGetValue(task, '难度[0]', '?')} ⭐</p> <p><b>奖励:</b> ${rewardString}</p> <p><b>失败惩罚:</b> ${SafeGetValue(task, '失败惩罚[0]', '无')}</p> </div> </details>`; 
+            }).join('') : `<p class="empty-state-text">${emptyIcon}(暂无任务)</p>`; 
+            setContent('tasks-section', content); 
+        }
+        
+function populateAssets(assetsData) { 
+    const currency = SafeGetValue(assetsData, '货币', {}); 
+    const inventoryContainer = SafeGetValue(assetsData, '背包', []); 
+    const inventory = Array.isArray(inventoryContainer) && inventoryContainer.length > 0 ? inventoryContainer[0] : {}; 
+    
+    // 过滤背包列表中的 //reason
+    const invKeys = typeof inventory === 'object' && inventory !== null ? Object.keys(inventory).filter(k => k !== '$meta' && k !== '//reason') : []; 
+    const currencyIcons = { '金币': 'fa-solid fa-circle-dollar-to-slot icon-gold', '银币': 'fa-solid fa-coins icon-silver', '铜币': 'fa-solid fa-circle icon-copper', '白金币': 'fa-solid fa-gem icon-platinum', '星辉结晶': 'fa-solid fa-star icon-crystal', '兽骨币': 'fa-solid fa-bone icon-bone' }; 
+    const emptyIcon = `<i class="fa-solid fa-scroll fa-xs" style="opacity: 0.6; margin-right: 5px;"></i>`; 
+    
+    // 渲染货币
+    const currencyHtml = typeof currency === 'object' && currency !== null && Object.keys(currency).length > 0 ? `<div class="currency-grid">${Object.keys(currency).filter(c => c !== '$meta' && c !== '//reason').map(c => `<div class="currency-item"><i class="currency-icon ${currencyIcons[c] || 'fa-solid fa-sack-dollar'}"></i><div class="currency-info"><span class="property-name">${c}</span><div class="value-main">${SafeGetValue(currency, `${c}[0]`, 0)}</div></div></div>`).join('')}</div>` : `<p class="empty-state-text">${emptyIcon}(没有货币)</p>`; 
+    
+    const filteredInvKeys = invKeys.filter(key => { const item = inventory[key]; if (currentInventoryFilter === '全部') return true; const itemType = SafeGetValue(item, 'type[0]', '未知'); return itemType === currentInventoryFilter; }); 
+    
+    // --- [ 核心修复：添加 event.preventDefault() 防止冲突 ] ---
+    const inventoryHtml = filteredInvKeys.length > 0 ? filteredInvKeys.map(key => { 
+        const item = inventory[key]; 
+        if (typeof item !== 'object' || item === null) return ''; 
+        
+        const desc = SafeGetValue(item, '描述[0]', '暂无详细介绍。');
+        const name = SafeGetValue(item, '名称[0]', key);
+        const count = SafeGetValue(item, '数量[0]', 1);
+        const type = SafeGetValue(item, 'type[0]', '?');
+        const isUsable = SafeGetValue(item, 'usable[0]', false);
+
+        // 注意下面的 button onclick 事件
+        return `
+        <details style="border-bottom: 1px dotted var(--border-color); margin-bottom: 0;"> 
+            <summary style="display: flex; align-items: center; justify-content: space-between; padding: 8px 5px; cursor: pointer; list-style: none;">
+                <div> 
+                    <b>${name}</b> (x${count}) <span class="tag">${type}</span> 
+                </div> 
+                ${isUsable ? `
+                    <button class="action-button" 
+                            data-action="use-item" 
+                            data-item-name="${name}" 
+                            onclick="event.preventDefault();" 
+                            style="padding: 2px 6px; font-size: 0.8em; margin-left: 8px; position: relative; z-index: 10;">
+                        <i class="fa-solid fa-hand-pointer"></i>使用
+                    </button>` 
+                : ''} 
+            </summary>
+            <div style="padding: 5px 10px 10px 10px; font-size: 0.9em; color: var(--secondary-text); background: rgba(0,0,0,0.03); border-radius: 4px; margin: 0 5px 5px 5px;">
+                <i class="fa-solid fa-circle-info" style="opacity:0.7; font-size:0.9em; margin-right:4px;"></i> ${desc}
+            </div>
+        </details>`; 
+    }).join('') : `<p class="empty-state-text">${emptyIcon}(无${currentInventoryFilter !== '全部' ? currentInventoryFilter : ''}物品)</p>`; 
+    
+    const itemTypes = ['全部', ...new Set(invKeys.map(key => SafeGetValue(inventory[key], 'type[0]', null)).filter(Boolean))]; 
+    const filterButtonsHtml = `<div style="margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 4px;">${itemTypes.map(type => `<button class="filter-btn ${currentInventoryFilter === type ? 'active' : ''}" data-filter-type="inventory" data-filter-value="${type}">${type}</button>`).join('')}</div>`; 
+    
+    setContent('assets-section', `${currencyHtml}<hr><h4>背包</h4>${filterButtonsHtml}${inventoryHtml}`); 
+}
+        
+        function populateNews(news) { const formatNews = (newsText) => (newsText || '(暂无)').replace(/\\n/g, '<br>'); setContent('news-section', ` <button class="action-button" data-action="update-news" style="width:100%; margin-bottom: 10px;"><i class="fa-solid fa-rotate"></i>更新情报</button> <details class="sub-section"><summary>金狮快讯</summary><div class="sub-section-content">${formatNews(SafeGetValue(news, '金狮快讯[0]', '(暂无)'))}</div></details> <details class="sub-section"><summary>酒馆留言板</summary><div class="sub-section-content">${formatNews(SafeGetValue(news, '酒馆留言板[0]', '(暂无)'))}</div></details> <details class="sub-section"><summary>世界真奇妙</summary><div class="sub-section-content">${formatNews(SafeGetValue(news, '世界真奇妙[0]', '(暂无)'))}</div></details> <details class="sub-section"><summary>莉莉丝的午后茶会</summary><div class="sub-section-content">${formatNews(SafeGetValue(news, '莉莉丝的午后茶会[0]', '(暂无)'))}</div></details> `); }
+        
+        function populateCodex(codexContainer) { 
+            const codex = Array.isArray(codexContainer) && codexContainer.length > 0 ? codexContainer[0] : {}; 
+            // 【修正 10】过滤图鉴中的 //reason
+            const codexKeys = typeof codex === 'object' && codex !== null ? Object.keys(codex).filter(k => k !== '$meta' && k !== '//reason') : []; 
+            const emptyIcon = `<i class="fa-solid fa-scroll fa-xs" style="opacity: 0.6; margin-right: 5px;"></i>`; 
+            const content = codexKeys.length > 0 ? codexKeys.map(k => { const entry = codex[k]; if (typeof entry !== 'object' || entry === null) return ''; const category = SafeGetValue(entry, '分类[0]', '未知'); const title = SafeGetValue(entry, '标题[0]', '未知条目'); const description = SafeGetValue(entry, '描述[0]', '...'); let icon = 'fa-solid fa-question'; if (category === '地点') icon = 'fa-solid fa-map'; else if (category === '人物') icon = 'fa-solid fa-user-pen'; else if (category === '历史') icon = 'fa-solid fa-landmark'; else if (category === '物品') icon = 'fa-solid fa-gem'; return `<details class="sub-section memory-entry"> <summary><i class="${icon} icon" style="margin-right: 8px; font-size: 0.9em; opacity: 0.7;"></i> [${category}] ${title}<span class="arrow-toggle">&gt;</span></summary> <div class="sub-section-content memory-content"> <p>${description.replace(/\\n/g, '<br>')}</p> </div> </details>`; }).join('') : `<p class="empty-state-text">${emptyIcon}(图鉴为空)</p>`; setContent('codex-section', content); 
+        }
+
+
+        // --- [ 4. 战斗 UI 渲染器 ] ---
+        
+        window.battle_ui_events = {
+            selectTab: (tabName) => {
+                currentCombatTab = tabName; 
+                renderBattleUI(window.last_stat_data); 
+            },
+            _addToPreInput: (text) => {
+                try {
+                    const preInputEl = document.getElementById('pre-input-bar');
+                    if (!preInputEl) return;
+                    const oldText_DOM = preInputEl.value;
+                    const oldText_MVU = SafeGetValue(window.last_stat_data, '战斗状态.预输入[0]', ''); 
+                    const newText_DOM = oldText_DOM ? oldText_DOM + '\n' + text : text;
+                    const newText_MVU = oldText_MVU ? oldText_MVU + '\\n' + text : text; 
+                    preInputEl.value = newText_DOM;
+                    if (window.last_stat_data && window.last_stat_data['战斗状态'] && window.last_stat_data['战斗状态']['预输入']) {
+                        window.last_stat_data['战斗状态']['预输入'][0] = newText_MVU;
+                    }
+                    window.SillyTavern_MVU_Set('战斗状态.预输入[0]', oldText_MVU, newText_MVU, 'UI: 添加行动');
+                } catch(e) { console.error("[MasterUI] _addToPreInput failed:", e); }
+            },
+            _getCurrentTargetName: () => {
+                return SafeGetValue(window.last_stat_data, `战斗状态[0].allies.${selectedParticipantKey}.名称[0]`, 
+                       SafeGetValue(window.last_stat_data, `战斗状态[0].enemies.${selectedParticipantKey}.名称[0]`, '??'));
+            },
+            useSkill: (skillName, skillKey) => { window.battle_ui_events._addToPreInput(`${window.battle_ui_events._getCurrentTargetName()} [使用技能] ${skillName}`); },
+            useItem: (itemName, itemKey) => { window.battle_ui_events._addToPreInput(`${window.battle_ui_events._getCurrentTargetName()} [使用物品] ${itemName}`); },
+            coreAction: (action) => { window.battle_ui_events._addToPreInput(`${window.battle_ui_events._getCurrentTargetName()} [${action}]`); },
+            startTurn: () => {
+                try {
+                    const preInputEl = document.getElementById('pre-input-bar');
+                    if (!preInputEl) return;
+                    const textToSend = preInputEl.value; 
+                    const oldText_MVU = SafeGetValue(window.last_stat_data, '战斗状态.预输入[0]', ''); 
+                    if (textToSend && textToSend.trim() !== '') {
+                        const formattedCommand = `/send ${textToSend.replace(/\n/g, ' ')} |/trigger`;
+                        window.SillyTavern_TriggerSlash(formattedCommand); 
+                        preInputEl.value = '';
+                        if (window.last_stat_data && window.last_stat_data['战斗状态'] && window.last_stat_data['战斗状态']['预输入']) {
+                            window.last_stat_data['战斗状态']['预输入'][0] = '';
+                        }
+                        window.SillyTavern_MVU_Set('战斗状态.预输入[0]', oldText_MVU, '', 'UI: 清空预输入并已发送');
+                    } else { console.warn("[MasterUI-Battle] 预输入为空，不发送。"); }
+                } catch(e) { console.error("[MasterUI] startTurn failed:", e); }
+            },
+            endBattle: () => { window.SillyTavern_TriggerSlash('/send [系统指令：战斗结束，请求结算] |/trigger'); }
+        };
+
+        function getParticipantData_v15(key, fullData) {
+            let skills = {};
+            let items = {};
+
+            if (key === '主角') { 
+                skills = SafeGetValue(fullData, '主角.技能[0]', {});
+                items = SafeGetValue(fullData, '财产.背包[0]', {});
+            } else {
+                skills = SafeGetValue(fullData, `人脉关系[0].${key}.技能[0]`, {});
+                if (Object.keys(skills).length <= 1) { 
+                    skills = SafeGetValue(fullData, `命运系统.红线对象[0].${key}.技能[0]`, {}); 
+                }
+                items = SafeGetValue(fullData, `人脉关系[0].${key}.背包[0]`, {});
+                 if (Object.keys(items).length <= 1) {
+                    items = SafeGetValue(fullData, `命运系统.红线对象[0].${key}.背包[0]`, {});
+                }
+            }
+            return { skills, items };
+        }
+
+        function renderBattleUI(data) {
+            const wrapper = document.getElementById('battle-ui-wrapper');
+            if (!wrapper) { console.error("[MasterUI] Battle UI wrapper not found!"); return; }
+            const playerArea = document.getElementById('player-combatants-area');
+            const enemyArea = document.getElementById('enemy-combatants-area');
+            const playerPlaceholder = document.getElementById('player-combatants-placeholder');
+            const enemyPlaceholder = document.getElementById('enemy-combatants-placeholder');
+            
+            playerArea.innerHTML = '<div class="team-title">光の盟友</div>';
+            enemyArea.innerHTML = '<div class="team-title">深淵の敵</div>';
+
+            const alliesObj = SafeGetValue(data, '战斗状态[0].allies', {});
+            const enemiesObj = SafeGetValue(data, '战斗状态[0].enemies', {});
+            
+            // 【修正 11】过滤战斗单位列表中的 //reason
+            const allyKeys = Object.keys(alliesObj).filter(k => k !== '$meta' && k !== '//reason');
+            const enemyKeys = Object.keys(enemiesObj).filter(k => k !== '$meta' && k !== '//reason');
+
+            if (!alliesObj[selectedParticipantKey] && !enemiesObj[selectedParticipantKey]) {
+                selectedParticipantKey = allyKeys.length > 0 ? allyKeys[0] : (enemyKeys.length > 0 ? enemyKeys[0] : null);
+            }
+
+            let playerUnitsFound = 0;
+            allyKeys.forEach(key => {
+                const unit = alliesObj[key];
+                if (typeof unit !== 'object' || unit === null) return;
+                const name = SafeGetValue(unit, '名称[0]', key);
+                const type = (key === '主角' ? '主角' : '友军');
+                const hp_val = SafeGetValue(unit, '生命值[0]', 0); 
+                const hp_max = SafeGetValue(unit, '生命值上限[0]', 100);
+                const mp_val = SafeGetValue(unit, '法力值[0]', 0);
+                const mp_max = SafeGetValue(unit, '法力值上限[0]', 100);
+                const hp_perc = hp_max > 0 ? (hp_val / hp_max) * 100 : 0;
+                const mp_perc = mp_max > 0 ? (mp_val / mp_max) * 100 : 0;
+                const isSelected = (key === selectedParticipantKey); 
+
+                let barHtml = `<div class="combatant-bar ${isSelected ? 'selected' : ''}" data-key="${key}"> 
+                                <div class="combatant-header">
+                                    <span class="combatant-name">${name}</span>
+                                    <span class="combatant-type">${type}</span>
+                                </div>
+                                <div class="stat-bars">
+                                    <div class="stat-bar"><div class="stat-bar-value hp" style="width: ${hp_perc}%;"></div><div class="stat-bar-text"><span class="label">命:</span> ${hp_val} / ${hp_max}</div></div>
+                                    <div class="stat-bar"><div class="stat-bar-value mp" style="width: ${mp_perc}%;"></div><div class="stat-bar-text"><span class="label">法:</span> ${mp_val} / ${mp_max}</div></div>
+                                </div>
+                             </div>`;
+                playerArea.innerHTML += barHtml; 
+                playerUnitsFound++;
+            });
+
+            let enemyUnitsFound = 0;
+            enemyKeys.forEach(key => {
+                const unit = enemiesObj[key];
+                if (typeof unit !== 'object' || unit === null) return;
+                const name = SafeGetValue(unit, '名称[0]', key);
+                const type = '敌军';
+                const hp_val = SafeGetValue(unit, '生命值[0]', 0); 
+                const hp_max = SafeGetValue(unit, '生命值上限[0]', 100);
+                const hp_perc = hp_max > 0 ? (hp_val / hp_max) * 100 : 0;
+                const isSelected = (key === selectedParticipantKey); 
+
+                let barHtml = `<div class="combatant-bar ${isSelected ? 'selected' : ''}" data-key="${key}"> 
+                                <div class="combatant-header">
+                                    <span class="combatant-name">${name}</span>
+                                    <span class="combatant-type">${type}</span>
+                                </div>
+                                <div class="stat-bars">
+                                    <div class="stat-bar"><div class="stat-bar-value hp" style="width: ${hp_perc}%;"></div><div class="stat-bar-text"><span class="label">命:</span> ${hp_val} / ${hp_max}</div></div>
+                                </div>
+                             </div>`;
+                enemyArea.innerHTML += barHtml; 
+                enemyUnitsFound++;
+            });
+
+
+            if (playerUnitsFound === 0) playerArea.appendChild(playerPlaceholder.cloneNode(true)); 
+            if (enemyUnitsFound === 0) enemyArea.appendChild(enemyPlaceholder.cloneNode(true)); 
+
+            const tabContentArea = document.getElementById('tab-content-area');
+            tabContentArea.innerHTML = '';
+            
+            document.getElementById('tab-btn-skills').classList.toggle('active-tab', currentCombatTab === 'skills');
+            document.getElementById('tab-btn-bags').classList.toggle('active-tab', currentCombatTab === 'bags');
+
+            const selectedUnitIsAlly = alliesObj.hasOwnProperty(selectedParticipantKey);
+            if (selectedUnitIsAlly) {
+                const { skills, items } = getParticipantData_v15(selectedParticipantKey, data);
+                if (currentCombatTab === 'skills') {
+                    // 【修正 12】过滤战斗技能面板中的 //reason
+                    const skillKeys = Object.keys(skills).filter(k => k !== '$meta' && k !== '//reason');
+                    if (skillKeys.length > 0) {
+                        skillKeys.forEach(key => {
+                            const skill = skills[key];
+                            if (typeof skill !== 'object' || skill === null) return;
+                            const name = SafeGetValue(skill, '名称[0]', key);
+                            const cost = SafeGetValue(skill, 'cost[0]', '无消耗');
+                            const desc = SafeGetValue(skill, '描述[0]', '暂无描述。');
+                            tabContentArea.innerHTML += `<button class="action-item-button" onclick="window.battle_ui_events.useSkill('${name}', '${key}')"><div><div class="action-item-name">${name}</div><div class="action-item-desc">${desc}</div></div><div class="action-item-cost">${cost}</div></button>`;
+                        });
+                    } else { tabContentArea.innerHTML = '<p class="empty-state-text">(未习得奥義)</p>'; }
+                } else { 
+                    // 【修正 13】过滤战斗物品面板中的 //reason
+                    const bagKeys = Object.keys(items).filter(k => k !== '$meta' && k !== '//reason');
+                    if (bagKeys.length > 0) {
+                        let itemsFound = 0;
+                        bagKeys.forEach(key => {
+                            const item = items[key];
+                            if (typeof item !== 'object' || item === null) return;
+                            const name = SafeGetValue(item, '名称[0]', key);
+                            const count = SafeGetValue(item, '数量[0]', 0);
+                            const desc = SafeGetValue(item, '描述[0]', '暂无描述。');
+                            if (count <= 0) return; 
+                            tabContentArea.innerHTML += `<button class="action-item-button" onclick="window.battle_ui_events.useItem('${name}', '${key}')"><div><div class="action-item-name">${name}</div><div class="action-item-desc">${desc}</div></div><div class="action-item-count">x ${count}</div></button>`;
+                            itemsFound++;
+                        });
+                        if (itemsFound === 0) { tabContentArea.innerHTML = '<p class="empty-state-text">(次元袋空空如也)</p>'; }
+                    } else { tabContentArea.innerHTML = '<p class="empty-state-text">(次元袋空空如也)</p>'; }
+                }
+            } else {
+                tabContentArea.innerHTML = '<p class="empty-state-text">(无法探知敌人的行动...)</p>';
+            }
+
+            const preInputEl = document.getElementById('pre-input-bar');
+            const logEl = document.getElementById('battle-log-content');
+            
+            if (preInputEl.value.trim() === '') { preInputEl.value = ""; } 
+            
+            let combatLog = SafeGetValue(data, '战斗状态[0].combat_log', []); 
+            if (Array.isArray(combatLog) && combatLog.length > 0 && !Array.isArray(combatLog[0])) {
+                 combatLog = [SafeGetValue(data, '战斗状态[0].combat_log[0]', '(战斗日志)')];
+            } else if (!Array.isArray(combatLog)) {
+                 combatLog = [String(combatLog)];
+            }
+            logEl.innerHTML = combatLog.length > 0 ? combatLog.slice(-10).map(log => `<p>${log}</p>`).join('') : `<p class="empty-state-text">(战况...一片寂静...)</p>`;
+            
+            logEl.scrollTop = logEl.scrollHeight;
+            
+            const endBattleOverlay = document.getElementById('end-battle-overlay');
+            const uiMode = SafeGetValue(data, 'UI状态.当前界面[0]', '日常'); 
+            if (uiMode === '战斗' && enemyKeys.length === 0 && allyKeys.length > 0) { endBattleOverlay.classList.remove('hidden'); } 
+            else { endBattleOverlay.classList.add('hidden'); }
+        }
+
+        // --- [ 5. 主渲染路由 ] ---
+        function Master_Render_UI(data) {
+            if (!data || typeof data !== 'object') {
+                console.warn("[RoyalUI V17] Master_Render_UI 收到无效数据。");
+                return;
+            }
+            window.last_stat_data = data; 
+            
+            const uiMode = SafeGetValue(data, 'UI状态.当前界面[0]', '日常');
+            
+            setToggle('chessboard-container-wrapper', uiMode === '日常');
+            setToggle('battle-ui-wrapper', uiMode === '战斗');
+            
+            document.body.classList.toggle('status-mode', uiMode === '日常');
+            document.body.classList.toggle('combat-mode', uiMode === '战斗');
+
+            if (uiMode === '日常') {
+                renderStatusUI(data); 
+            } else {
+                renderBattleUI(data); 
+            }
+        }
+
+        // --- [ 6. 核心初始化 ] ---
+        async function Master_Init() {
+            console.log("--- [RoyalUI V17] Master_Init 启动 ---");
+            try {
+                const hasChat = typeof getChatMessages === 'function' && typeof getCurrentMessageId === 'function';
+                const msgs = hasChat ? await getChatMessages(getCurrentMessageId()) : []; 
+                const data = msgs?.[0]?.data?.stat_data; 
+                
+                let mergedData;
+                if (data && typeof data === 'object') {
+                    console.log("[RoyalUI V17] 发现 stat_data。与默认值合并。");
+                    mergedData = deepMerge(defaultEmptyState, data); 
+                } else {
+                    mergedData = defaultEmptyState;
+                }
+                
+                Master_Render_UI(mergedData); 
+                console.log("--- [RoyalUI V17] Master_Init 完成 ---");
+                
+                document.addEventListener('click', function(event) {
+                    const target = event.target;
+                    const combatWrapper = document.getElementById('battle-ui-wrapper');
+                    
+                    if (combatWrapper && !combatWrapper.classList.contains('hidden')) {
+                        const combatantBar = target.closest('.combatant-bar[data-key]');
+                        if (combatantBar) {
+                            const newKey = combatantBar.dataset.key;
+                            if (newKey !== selectedParticipantKey) {
+                                console.log("[MasterUI] 切换战斗目标 (本地):", newKey);
+                                selectedParticipantKey = newKey;
+                                renderBattleUI(window.last_stat_data); 
+                            }
+                            return; 
+                        }
+                    }
+
+                    const statusContainerVisible = !document.getElementById('chessboard-container-wrapper')?.classList.contains('hidden');
+                    if (statusContainerVisible) {
+                        const filterBtn = target.closest('.filter-btn[data-filter-type]'); 
+                        if (filterBtn) { const filterType = filterBtn.dataset.filterType; const filterValue = filterBtn.dataset.filterValue; if (filterType === 'inventory') { currentInventoryFilter = filterValue; populateAssets(SafeGetValue(window.last_stat_data, '财产', {})); } return; }
+                        
+                        const actionTargetNonCombat = target.closest('.action-button[data-action]'); 
+                        if (actionTargetNonCombat) { const action = actionTargetNonCombat.dataset.action; const location = actionTargetNonCombat.dataset.location; const itemNameNonCombat = actionTargetNonCombat.dataset.itemName; if (action === 'travel' && location) { sendCommand(`/send 前往 ${location} |/trigger`); return; } else if (action === 'update-news') { sendCommand(`/send 更新\"每日新闻\" |/trigger`); return; } }
+                        
+                        const protagonistTab = target.closest('.protagonist-tab[data-tab]'); 
+                        if (protagonistTab) { const newTab = protagonistTab.dataset.tab; if (newTab !== currentProtagonistTab) { currentProtagonistTab = newTab; populateProtagonist(SafeGetValue(window.last_stat_data, '主角', {})); } return; }
+                    }
+                });
+
+            } catch (e) {
+                console.error('CRITICAL Error during [RoyalUI V17] Master_Init:', e);
+                const wrapper = document.getElementById('chessboard-container-wrapper');
+                if(wrapper) wrapper.innerHTML = `<p style='color:red;'>状态栏加载出错: ${e.message}</p>`;
+            }
+        }
+        
+        // --- [ 7. 核心事件监听 ] ---
+        if (typeof waitGlobalInitialized === 'function') {
+            console.log("[RoyalUI V17] 等待 Mvu 初始化...");
+            waitGlobalInitialized('Mvu').then(() => {
+                console.log("[RoyalUI V17] Mvu 已初始化. 调用 Master_Init 并设置 *唯一* 监听器。");
+                Master_Init(); 
+                
+                eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, m => {
+                    if (m && m.stat_data && typeof m.stat_data === 'object') {
+                        Master_Render_UI(m.stat_data); 
+                    }
+                });
+            }).catch(error => {
+                console.error('[RoyalUI V17] 等待 Mvu 初始化时出错:', error);
+                document.addEventListener('DOMContentLoaded', Master_Init);
+            });
+        } else {
+            console.warn('[RoyalUI V17] waitGlobalInitialized 未找到。在 DOMContentLoaded 上加载。');
+            document.addEventListener('DOMContentLoaded', Master_Init);
+        }
+        
+    })();
+</script>
+</body>
+</html>
+```
