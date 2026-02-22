@@ -1,0 +1,17 @@
+_ENDED, m => { 
+                        if (m?.stat_data) { 
+                            currentData = m.stat_data; 
+                            renderAll(); 
+                        } 
+                    });
+                }
+            });
+        } else { 
+            // 如果是普通网页环境，直接启动
+            // 使用 setTimeout 确保 DOM 元素已经由浏览器渲染完毕
+            setTimeout(Init, 100);
+        }
+    })();
+</script>
+</body>
+</html>
