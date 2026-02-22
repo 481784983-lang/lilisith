@@ -1,0 +1,1301 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>异世界之旅 - 命运之织 V6.3</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Serif+SC:wght@400;500&display=swap');
+        :root{--bg-color:#f5efe6;--text-color:#4a3b31;--border-color-light:#d3c5b3;--border-color-strong:#785a4e;--title-color:#5d4037;--input-bg-color:rgba(253,250,245,0.9);--button-bg-color:#d7c8b6;--font-title:'Cinzel',serif;--font-body:'Noto Serif SC',serif;--placeholder-color:#9e8a7e;--points-color:#b22222}
+        *{box-sizing:border-box}
+        body{font-family:var(--font-body);background-color:var(--bg-color);color:var(--text-color);margin:0;padding:10px;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiGAAAAA3RFWHRDcmVhdGlvbiBUaW1lADE2NTEyNjIxMjEyMWtYJ+B0AAAAclBMVEVsbGz////v7+/MzMzj4+Pp6enh4eH8/Pz5+fnv7+/w8PDi4uLt7e3m5ub09PTx8fHk5OTZ2dnJycmrq6vT09Pm5ubU1NS/v7/x8fHe3t7c3Nzc3Nzs7OzLy8vo6OjIyMiampoVFRXCwsI4ODgjIyP9/f3///+m9s3nAAAAEHRSTlMAAQIDBAVGh4uNjpCVmJ+goaqssba5v8DBw8XLzP3+uK6o8AAAAXFJREFUSMftlWd3gjAQhp0ZJCiCEFzOaXv9PyiE9pS90Ie3d1p1n7nQ0/kF43wY0Q/2MDCzFh4YAEUOFoDEe4EATD1QgG0C+gB1gC9QAAKGDWjT0qT2pFuE3XnrSa9Tq+0B2H9r2m0T7Q0AAMCpUQT+wufNmJgAgGr+C5+D11rK/AHAQhR2BgcAAICBEAxNs2v2FQC4131sHxIBBggD14VpAwAAwPYGg4jWn+4CgGpyc0cAwD4A/l0bAQCEiM+e/a2pAK4MwPAHCxogwPcgYGAAlzZgH5L9aHroqOnHkQM+ku38x/cWl482A/zJ3y0GAOg++k9V/71V2gAAq0V/fImbAAAAAElFTnoGM2vAAAAAElFTnoSuQmCC')}
+        .creator-scroll{border:2px solid var(--border-color-strong);padding:15px;background-color:rgba(240,230,210,0.9);box-shadow:0 4px 12px rgba(0,0,0,0.2);max-width:700px;width:100%;margin:auto;max-height:95vh;overflow-y:auto;}
+        .creator-scroll::-webkit-scrollbar{width:8px}
+        .creator-scroll::-webkit-scrollbar-track{background:var(--border-color-light)}
+        .creator-scroll::-webkit-scrollbar-thumb{background:var(--border-color-strong)}
+        h2.section-title{font-family:var(--font-title);color:var(--title-color);border-bottom:1px solid var(--border-color-light);padding-bottom:8px;margin-top:25px;margin-bottom:15px;font-size:1.3em;letter-spacing:1px}
+        .main-title{font-family:var(--font-title);font-weight:700;color:var(--title-color);text-align:center;font-size:1.6em;letter-spacing:2px;margin:0 0 20px 0}
+        .reincarnation-points{font-family:var(--font-title);font-weight:700;color:var(--points-color);font-size:1.1em;padding:10px;background-color:var(--button-bg-color);border:1px solid var(--border-color-strong);text-align:center;margin-bottom:20px;width:100%;position:sticky;top:-16px;z-index:100;margin-top:-15px;}
+        .input-group{margin-bottom:15px;border: 1px solid var(--border-color-light);padding: 12px;border-radius: 4px;background-color: rgba(253, 250, 245, 0.6);}
+        .input-group > *:last-child { margin-bottom: 0; }
+        #attributes-group .attributes-container {padding-top: 10px;}
+        label{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-weight:500;color:var(--title-color);font-size:1.05em}
+        input[type=text],input[type=number],select,textarea{width:100%;padding:10px 12px;border:1px solid var(--border-color-light);background-color:var(--input-bg-color);color:var(--text-color);font-family:var(--font-body);font-size:1em;transition:border-color .2s,box-shadow .2s;resize:vertical; margin-top: 5px; border-radius: 3px;}
+        input:focus,select:focus,textarea:focus{outline:none;border-color:var(--border-color-strong);box-shadow:0 0 5px rgba(120,90,78,.4)}
+        input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:8px;background:var(--border-color-light);outline:0;cursor:pointer; margin-top: 5px; border-radius: 4px;}
+        input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--title-color);cursor:pointer;border:2px solid var(--border-color-strong); border-radius: 50%;}
+        input[type=range]::-moz-range-thumb {width: 16px; height: 16px; background: var(--title-color); cursor: pointer; border: 2px solid var(--border-color-strong); border-radius: 50%;}
+        .attributes-container{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
+        .attribute-control{display:flex;align-items:center;justify-content:space-between;background-color:var(--input-bg-color);padding:5px 10px;border:1px solid var(--border-color-light); border-radius: 3px;}
+        .attribute-control .stat-name{font-weight:500; flex-basis: 30%;}
+        .attribute-control .stat-value{font-weight:700;color:var(--title-color); flex-basis: 15%; text-align: right; margin-right: 5px;}
+        .attribute-control .ap-buttons{display:flex;align-items:center; flex-basis: 55%; justify-content: flex-end;}
+        .attribute-control .ap-btn{background-color:var(--button-bg-color);border:1px solid var(--border-color-strong);color:var(--text-color);font-weight:700;cursor:pointer;width:28px;height:28px;line-height:24px;text-align:center;transition:background-color .2s; border-radius: 3px; padding: 0;}
+        .attribute-control .ap-btn:disabled{background-color:#e0e0e0;cursor:not-allowed; opacity: 0.7;}
+        .attribute-control .ap-input{width:40px;text-align:center;border:none;background:0 0;font-weight:500;color:var(--points-color);-moz-appearance:textfield; margin: 0 5px;}
+        .custom-input,.conditional-display-group{display:none;margin-top:10px}
+        .custom-input.show,.conditional-display-group.show{display:block}
+        .narrative-vignette{background-color:rgba(0,0,0,0.05);border-left:3px solid var(--border-color-strong);padding:10px 15px;margin-top:10px;font-size:.9em;font-style:italic; border-radius: 0 3px 3px 0;}
+        .skill-option{display:flex;align-items:flex-start;cursor:pointer;padding:10px;border:1px solid var(--border-color-light);background-color:var(--input-bg-color);transition:background-color .2s,border-color .2s; border-radius: 3px;}
+        .skill-option:hover{background-color:rgba(220,210,190,.6);border-color:var(--border-color-strong)}
+        .skill-option-content{display:flex;flex-direction:column;flex-grow:1}
+        .skill-main-info{font-weight:500;color:var(--title-color)}
+        .skill-description{margin-top:6px;font-size:.85em;color:var(--text-color)}
+        .skill-option input[type=checkbox],.skill-option input[type=radio]{margin-right:12px;margin-top:4px;-webkit-appearance:none;appearance:none;width:18px;height:18px;border:1px solid var(--border-color-strong);position:relative;cursor:pointer;flex-shrink:0; background-color: var(--input-bg-color); transition: background-color 0.2s; vertical-align: top;}
+        .skill-option input[type=checkbox] { border-radius: 3px; }
+        .skill-option input[type=checkbox]:checked{background-color:var(--title-color)}
+        .skill-option input[type=checkbox]:checked::after{content:'✔';color:#fff;font-size:12px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+        .skill-option input[type=radio] { border-radius: 50%; }
+        .skill-option input[type=radio]:checked { background-color: var(--input-bg-color); }
+        .skill-option input[type=radio]:checked::before {content: ''; display: block; width: 10px; height: 10px; background-color: var(--title-color); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
+        .selection-btn,.submit-button,.modal-confirm-btn{padding:12px;font-family:var(--font-body);font-weight:700;color:var(--title-color);background-color:var(--button-bg-color);border:1px solid var(--border-color-strong);cursor:pointer;transition:all .2s ease;width:100%;font-size:1.1em; margin-top: 8px; border-radius: 4px;}
+        .selection-btn:hover,.submit-button:hover,.modal-confirm-btn:hover{background-color:#c6b8a5}
+        .selection-control{display:flex;flex-direction:column;gap:8px}
+        .selection-summary,.racial-bonus{font-size:.85em;color:var(--text-color);padding-left:5px;margin-top:5px;min-height:1em;}
+        .rarity-common{color:#6c757d}.rarity-uncommon{color:#4caf50}.rarity-rare{color:#2196f3}.rarity-epic{color:#9c27b0}.rarity-legendary{color:#ffc107}.rarity-mythic{color:#f44336}
+        .skill-main-info .rarity-common,.skill-main-info .rarity-uncommon,.skill-main-info .rarity-rare,.skill-main-info .rarity-epic,.skill-main-info .rarity-legendary,.skill-main-info .rarity-mythic{font-weight:700}
+        .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,.6); overflow-y: auto;}
+        .modal-content{background-color:var(--bg-color);margin:5% auto;padding:25px;border:2px solid var(--border-color-strong);width:90%;max-width:600px; border-radius: 5px;}
+        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+        .modal-title{font-family:var(--font-title);font-size:1.5em;color:var(--title-color);margin:0}
+        .close-btn{font-size:28px;font-weight:700;cursor:pointer; color: var(--border-color-strong); line-height: 1;}
+        .modal-options-list{display:flex;flex-direction:column;gap:10px;max-height:65vh;overflow-y:auto;padding-right:10px}
+        .modal-options-list::-webkit-scrollbar { width: 6px; }
+        .modal-options-list::-webkit-scrollbar-track { background: var(--border-color-light); border-radius: 3px; }
+        .modal-options-list::-webkit-scrollbar-thumb { background: var(--border-color-strong); border-radius: 3px; }
+        .modal-footer{margin-top:20px;text-align:right}
+        small{color:var(--text-color);opacity:.8; display: block; /* Ensure small tag takes block space */}
+        .world-state-group .slider-label{display:flex;justify-content:space-between;font-size:.9em; margin-bottom: 5px;}
+        .modal-custom-section{margin-top:15px;border-top:1px solid var(--border-color-light);padding-top:15px}
+        #diceRoller button { font-size: 1.1em; padding: 10px 15px; }
+        #diceResult { text-align: center; margin-top: 10px; font-weight: bold; color: var(--title-color); font-size: 1.1em; }
+        .submit-button { margin-top: 30px; }
+        .submit-button:disabled { background-color: #d3c5b3; cursor: not-allowed; opacity: 0.8; }
+        .input-group > .conditional-display-group {border: none; padding: 0; margin-top: 10px; background: none;}
+        .input-group > .conditional-display-group > label {margin-bottom: 5px;}
+        /* Ensure labels in modal custom section align */
+        .modal-custom-section > label { align-items: center; }
+
+        @media (min-width: 600px) {
+            .attributes-container { grid-template-columns: 1fr 1fr; }
+            .creator-scroll{ padding: 20px 25px; } /* Adjusted padding */
+            .reincarnation-points { top: -21px; margin-top: -20px; } /* Adjusted sticky position */
+        }
+         @media (min-width: 768px) {
+             .attributes-container { grid-template-columns: 1fr 1fr 1fr; }
+         }
+    </style>
+</head>
+<body>
+    <div class="creator-scroll">
+        <div class="main-title">异世界之旅：命运之织 V6.3</div>
+        <div class="reincarnation-points">可用转生点: <span id="reincarnationPointsDisplay">0</span></div>
+
+        <h2 class="section-title">I. 命运之骰</h2>
+        <div class="input-group" id="diceRoller">
+            <label for="diceButton">命运的起点</label>
+            <button id="diceButton" class="selection-btn">🎲 点击掷骰 (基础500 + 2D6 * 25)</button> <div id="diceResult" style="display:none;"></div>
+        </div>
+
+        <h2 class="section-title">II. 现世之塑</h2>
+        <div class="input-group">
+            <label for="nameInput">🖋️ 姓名</label>
+            <input type="text" id="nameInput" placeholder="一个将要响彻大陆的名字..." />
+        </div>
+        <div class="input-group">
+             <label for="genderInput">🌗 性别</label>
+             <select id="genderInput"><option value="" disabled selected>选择你的存在形态</option><option value="男">男</option><option value="女">女</option><option value="custom">自定义</option></select>
+             <input type="text" id="customGenderInput" class="custom-input" placeholder="超越凡俗的想象..." />
+        </div>
+        <div class="input-group">
+             <label for="ageInput">⏳ 年龄</label>
+             <input type="number" id="ageInput" placeholder="你的故事从何处开始" min="0" value="18"/>
+        </div>
+        <div class="input-group">
+             <label for="raceInput">🩸 种族</label>
+             <select id="raceInput"></select>
+             <div id="racialBonus" class="racial-bonus"></div>
+             <input type="text" id="customRaceInput" class="custom-input" placeholder="一种未被记载于世界书的血脉..." />
+        </div>
+        <div class="input-group">
+            <label for="identityInput">👑 身份</label>
+            <select id="identityInput"></select>
+            <input type="text" id="customIdentityInput" class="custom-input" placeholder="一段不为人知的过往..." />
+            <div id="originVignette" class="narrative-vignette" style="display:none;"></div>
+        </div>
+        <div class="input-group">
+             <label for="startLocationInput">🗺️ 起始地点</label>
+             <select id="startLocationInput"></select>
+        </div>
+
+
+        <h2 class="section-title">III. 天赋与缺陷</h2>
+        <div class="input-group" id="attributes-group">
+             <label>🎲 初始属性 <small>(基础4, 可用点: <span id="apDisplay">5</span>)</small></label>
+             <div class="attributes-container"></div>
+        </div>
+        <div class="input-group">
+            <label>💫 初始技能与天赋</label>
+            <div class="selection-control">
+                <button class="selection-btn" data-category="skills">选择技能/天赋</button>
+                <div class="selection-summary" id="skillsSummary">已选0项，消耗0点</div>
+            </div>
+        </div>
+        <div class="input-group">
+             <label>🥀 负面特质</label>
+             <div class="selection-control">
+                 <button class="selection-btn" data-category="negativeTraits">选择缺陷以换取点数</button>
+                 <div class="selection-summary" id="negativeTraitsSummary">已选0项，获得0点</div>
+             </div>
+        </div>
+
+        <h2 class="section-title">IV. 初始羁绊与行囊</h2>
+        <div class="input-group">
+            <label>❤️ 初始伙伴</label>
+            <div class="selection-control">
+                 <button class="selection-btn" data-category="redThreads">选择初始伙伴 (限定一位)</button>
+                 <div class="selection-summary" id="redThreadsSummary">未选择</div>
+            </div>
+             <div class="conditional-display-group" id="relationshipGroup"> <label for="relationshipInput">设定初始关系</label>
+                 <select id="relationshipInput"></select>
+                 <div id="relationshipVignette" class="narrative-vignette" style="display:none;"></div>
+             </div>
+        </div>
+        <div class="input-group">
+             <label>⚔️ 初始装备</label>
+             <div class="selection-control">
+                 <button class="selection-btn" data-category="equipments">选择装备</button>
+                 <div class="selection-summary" id="equipmentsSummary">已选0件，消耗0点</div>
+             </div>
+        </div>
+        <div class="input-group">
+             <label>🎒 初始物品</label>
+             <div class="selection-control">
+                 <button class="selection-btn" data-category="items">选择物品</button>
+                 <div class="selection-summary" id="itemsSummary">已选0件，消耗0点</div>
+             </div>
+        </div>
+
+        <h2 class="section-title">V. 世界的序幕</h2>
+        <div class="input-group">
+            <label>🧭 初始背景</label>
+            <div class="selection-control">
+                <button class="selection-btn" data-category="backgrounds">选择背景剧本...</button>
+                <div class="selection-summary" id="backgroundsSummary">未选择</div>
+            </div>
+             <div id="backgroundStoryGroup" class="conditional-display-group"> <label for="backgroundStory">📜 你的背景故事</label>
+                 <textarea id="backgroundStory" rows="4" placeholder="你选择了自定义背景，请在此处填写你的故事..."></textarea>
+             </div>
+        </div>
+        <div class="input-group world-state-group">
+             <label>调整世界初始状态 <span class="reincarnation-points-inline">点数调整: <span id="worldStateCost">0</span></span></label>
+             <div class="slider-label"><span>帝国衰微</span><span id="imperialStateLabel">秩序井然</span><span>帝国鼎盛</span></div>
+             <input type="range" id="imperialState" min="-20" max="20" value="0" step="20">
+             <div class="slider-label" style="margin-top: 10px;"><span>深渊沉睡</span><span id="abyssalStateLabel">暗流涌动</span><span>深渊入侵</span></div>
+             <input type="range" id="abyssalState" min="-15" max="15" value="0" step="15">
+        </div>
+
+        <h2 class="section-title">VI. 系统设定</h2>
+        <div class="input-group">
+            <label for="lilithModeInput">AI助手“莉莉丝”模式</label>
+            <select id="lilithModeInput"></select>
+        </div>
+        <div class="input-group">
+             <label>💖 最终命运点数 (FP)</label>
+             <div id="destinyPointsFinal" style="font-weight:bold; color: var(--points-color); font-size: 1.2em;">0</div>
+             <small>(剩余转生点将自动转化为命运点数，1:10)</small>
+        </div>
+
+        <button id="sendButton" class="submit-button" disabled>请先掷骰</button> </div>
+
+    <div id="selectionModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header"><h2 id="modalTitle" class="modal-title"></h2><span class="close-btn">&times;</span></div>
+          <div id="modalOptionsList" class="modal-options-list"></div>
+          <div class="modal-footer"><button id="modalConfirmBtn" class="modal-confirm-btn">确认选择</button></div>
+        </div>
+    </div>
+
+    <script>
+        // JAVASCRIPT LOGIC (V6.3)
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Constants and Data ---
+            const RARITY_MAP = { common:'普通', uncommon:'优良', rare:'稀有', epic:'史诗', legendary:'传说', mythic:'神话' };
+            // DATA_POOL remains the same as in V6.2 (assuming no changes needed based on the bug report)
+             const DATA_POOL = {
+                races: [ // Based on uid:1, uid:10, uid:18, uid:22, uid:12
+                    { id: '人族', cost: 0, identities: ['帝国平民', '帝国低阶贵族', '教廷见习修士', '流浪者', '帝国学者', '佣兵', '开拓村村民', '退休的刺客', '皇家狮鹫骑士学徒', '城市卫兵新兵', '行商'], bonus: { text: '种族特性：无' } },
+                    { id: '半精灵', cost: 20, identities: ['被双方社会排斥者', '流浪者', '人类城市的大使(前任)', '森林巡守', '吟游诗人', '边境斥候'], bonus: { text: '种族特性: 敏捷+1, 魅力+1', attributes: {'敏捷': 1, '魅力': 1} } },
+                    { id: '亚人(猫灵族)', cost: 15, identities: ['亚人部族成员', '流浪者', '都市的舞者', '丛林斥候', '海盗瞭望员', '黑市商人', '屋顶跑者'], bonus: { text: '种族特性: 敏捷+2, 力量-1', attributes: {'敏捷': 2, '力量': -1} } },
+                    { id: '亚人(狐妖族)', cost: 30, identities: ['亚人部族成员', '流浪者', '亚人智者', '黑市商人', '宫廷顾问(前任)', '占星师学徒'], bonus: { text: '种族特性: 智力+1, 魅力+1', attributes: {'智力': 1, '魅力': 1} } },
+                    { id: '亚人(兔人族)', cost: 15, identities: ['亚人部族成员', '流浪者', '地脉勘探员', '开拓村村民', '信使', '草药师学徒'], bonus: { text: '种族特性: 体质+1, 敏捷+1, 力量-1', attributes: {'体质': 1, '敏捷': 1, '力量': -1} } },
+                    { id: '亚人(龙裔族)', cost: 50, identities: ['亚人部族成员', '流浪者', '龙眠神殿守卫(离职)', '流浪的角斗士', '龙裔雇佣兵', '角斗冠军', '部落战士'], bonus: { text: '种族特性: 力量+2, 体质+1, 敏捷-1', attributes: {'力量': 2, '体质': 1, '敏捷': -1} } },
+                    { id: '精灵', cost: 30, identities: ['精灵族人', '被放逐者', '星光咏者', '人类城市的大使(前任)', '月之守卫', '自然守护者(见习)', '古籍管理员'], bonus: { text: '种族特性: 精神+2, 敏捷+1, 体质-1', attributes: {'精神': 2, '敏捷': 1, '体质': -1} } },
+                    { id: '矮人', cost: 20, identities: ['矮人氏族工匠', '矮人边境守卫', '流浪者', '地底商人', '符文牧师', '啤酒酿造师', '矿工'], bonus: { text: '种族特性: 体质+2, 力量+1, 敏捷-1', attributes: {'体质': 2, '力量': 1, '敏捷': -1} } },
+                    { id: '魔族(混血)', cost: 40, identities: ['低阶魔族(伪装)', '被放逐者', '深渊密探(叛逃)', '混沌蛮兵(逃兵)', '魅魔/梦魇(潜伏)', '被神祇遗弃者', '黑市角斗士'], bonus: { text: '种族特性: 力量+1, 智力+1, 人类社会声望惩罚', attributes: {'力量': 1, '智力': 1} } }, // Adjusted 魔族 for playability
+                ],
+                 identities: { // Expanded and refined based on world lore and common RPG tropes
+                    '帝国平民': { name: '帝国平民', cost: 0, locations: ['格兰萨斯帝国-首都艾瑟嘉德', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '格兰萨斯帝国-金谷城'], vignette: '生于帝国治下，你见证着人类文明的辉煌与暗影，渴望改变平凡的命运。' },
+                    '帝国低阶贵族': { name: '帝国低阶贵族', cost: 40, locations: ['格兰萨斯帝国-首都艾瑟嘉德'], vignette: '你的姓氏带来荣耀，也带来了枷锁。宫廷的权力游戏是你必须学会的生存之道，或许一次冒险能带来转机？' },
+                    '教廷见习修士': { name: '教廷见习修士', cost: 10, locations: ['格兰萨斯帝国-首都艾瑟嘉德', '世界树神殿(中立圣地)'], vignette: '圣光是你的指引，但教廷内部并非只有虔诚。你怀揣信仰，踏入这纷乱的世界。' },
+                    '流浪者': { name: '流浪者', cost: -10, locations: ['格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '北境公国联盟-霜铁城', '亚人联盟-东南群岛(港口城市)', '流浪者营地(中部平原)', '帝国-边境要塞(西部山区)'], vignette: '四海为家，自由是你唯一的财富，危险是你永恒的同伴。世界的广阔在你脚下展开。' },
+                    '亚人部族成员': { name: '亚人部族成员', cost: 5, locations: ['亚人联盟-东南群岛(内陆部落)'], vignette: '你为部族而生，团结与适应是你们的生存法则。如今你离开家园，去探索更广阔的世界。' },
+                    '精灵族人': { name: '精灵族人', cost: 5, locations: ['精灵帝国-翡翠之心周边(林中聚落)'], vignette: '在古老的森林中，你聆听着自然的低语，守护着永恒的传统。但一颗不安的心驱使你外出。' },
+                    '被放逐者': { name: '被放逐者', cost: -20, locations: ['高危-魔族前线哨站(废弃)', '高危-古代遗迹入口', '流浪者营地(中部平原)', '无尽之海-海盗港(法外之地)'], vignette: '你被自己的同胞抛弃，只能在世界的边缘寻求生存，或是复仇。你的过去是一个谜。' },
+                    '矮人氏族工匠': { name: '矮人氏族工匠', cost: 5, locations: ['矮人帝国-深石堡垒外围(贸易站)', '北境公国联盟-霜铁城'], vignette: '你的生命与山脉、熔炉和敲击声融为一体。为了寻找稀有的材料或灵感，你来到了地表。' },
+                    '矮人边境守卫': { name: '矮人边境守卫', cost: 10, locations: ['矮人帝国-深石堡垒外围(贸易站)', '帝国-边境要塞(西部山区)'], vignette: '你守卫着地底王国的入口，对抗着黑暗中的威胁。一次任务让你离开了岗位。' },
+                    '低阶魔族(伪装)': { name: '低阶魔族(伪装)', cost: 10, locations: ['格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '黑市(地下网络入口)'], vignette: '你隐藏着真实的身份，行走于人类世界，或许是为了生存，或许是为了某个秘密任务。' },
+                    '帝国学者': { name: '帝国学者', cost: 25, locations: ['格兰萨斯帝国-首都艾瑟嘉德', '碧之塔(魔法学院都市)'], vignette: '知识的海洋浩瀚无垠，而你正是那无畏的航行者，为了某个研究课题而踏上旅途。' },
+                    '佣兵': { name: '佣兵', cost: 5, locations: ['格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '北境公国联盟-霜铁城', '帝国-边境要塞(西部山区)'], vignette: '你的忠诚只属于金币，你的剑为任何出价够高的人而战。生活就是接取下一个任务。' },
+                    '开拓村村民': { name: '开拓村村民', cost: -20, locations: ['开拓村-溪谷镇(帝国边境)'], vignette: '在文明的边缘，你与邻人一同对抗着荒野与未知的危险，渴望为村子带来更好的未来。' },
+                    '都市的舞者': { name: '都市的舞者', cost: 10, locations: ['格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '格兰萨斯帝国-首都艾瑟嘉德'], vignette: '你的舞姿是城市夜晚最迷人的风景，也是你收集情报、向上攀爬的伪装。' },
+                    '丛林斥候': { name: '丛林斥候', cost: 15, locations: ['亚人联盟-东南群岛(内陆部落)', '精灵帝国-翡翠之心周边(林中聚落)', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城'], vignette: '你是丛林的眼睛与耳朵，在树冠之间穿行，守护着部族的秘密或接受雇佣。' },
+                    '海盗瞭望员': { name: '海盗瞭望员', cost: 5, locations: ['亚人联盟-东南群岛(港口城市)', '无尽之海-海盗港(法外之地)'], vignette: '你在海盗船的桅杆上，寻找着猎物与危险。或许厌倦了海上生活，你来到了陆地。' },
+                    '龙眠神殿守卫(离职)': { name: '龙眠神殿守卫(离职)', cost: 60, locations: ['龙眠神殿外围(隐秘山谷)', '流浪者营地(中部平原)'], vignette: '你曾守护龙族的圣地，如今因故离开，带着古老的誓约与力量行走于世。' },
+                    '流浪的角斗士': { name: '流浪的角斗士', cost: 20, locations: ['格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '帝国-边境要塞(西部山区)'], vignette: '你为观众的欢呼与自己的生存而战，竞技场是你唯一的归宿，如今你寻求更广阔的舞台。' },
+                    '龙裔雇佣兵': { name: '龙裔雇佣兵', cost: 30, locations: ['帝国-边境要塞(西部山区)', '北境公国联盟-霜铁城', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城'], vignette: '你的龙血让你成为战场上最可靠的战士，无数人愿意为此支付高价。' },
+                    '星光咏者': { name: '星光咏者', cost: 25, locations: ['精灵帝国-翡翠之心周边(林中聚落)', '碧之塔(魔法学院都市)'], vignette: '你通过星辰的轨迹解读命运，你的歌声能够安抚最狂暴的灵魂。你外出是为了印证星象。' },
+                    '人类城市的大使(前任)': { name: '人类城市的大使(前任)', cost: 35, locations: ['格兰萨斯帝国-首都艾瑟嘉德', '流浪者营地(中部平原)'], vignette: '你曾在人类的权力中心斡旋，如今任期已满或因故离职，开始了新的旅程。' },
+                    '月之守卫': { name: '月之守卫', cost: 35, locations: ['精灵帝国-翡翠之心周边(林中聚落)'], vignette: '你是月神殿宇的守护者，银色的盔甲在夜色下熠熠生辉。一次神谕让你离开圣地。' },
+                    '地底商人': { name: '地底商人', cost: 15, locations: ['矮人帝国-深石堡垒外围(贸易站)', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '北境公国联盟-霜铁城'], vignette: '你穿梭于地底与地表，稀有的矿石与符文是你最大的财富。商业嗅觉让你来到这里。' },
+                    '符文牧师': { name: '符文牧师', cost: 20, locations: ['矮人帝国-深石堡垒外围(贸易站)', '北境公国联盟-霜铁城'], vignette: '你侍奉着锻造与山脉之神，将神力刻入符文，守护你的族人。你外出是为了朝圣或寻找圣物。' },
+                    '深渊密探(叛逃)': { name: '深渊密探(叛逃)', cost: 30, locations: ['流浪者营地(中部平原)', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城'], vignette: '你曾为深渊效力，但如今幡然醒悟或另有图谋，在躲避追杀的同时寻求新的目标。' },
+                    '混沌蛮兵(逃兵)': { name: '混沌蛮兵(逃兵)', cost: -5, locations: ['高危-魔族前线哨站(废弃)', '流浪者营地(中部平原)'], vignette: '你厌倦了无休止的杀戮，逃离了魔族大军，试图寻找一线生机。' },
+                    '魅魔/梦魇(潜伏)': { name: '魅魔/梦魇(潜伏)', cost: 30, locations: ['格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '格兰萨斯帝国-首都艾瑟嘉德'], vignette: '你以凡人的欲望为食，在阴影中编织着属于你的网络，享受着这场游戏。' },
+                    '退休的刺客': { name: '退休的刺客', cost: 30, locations: ['格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '开拓村-溪谷镇(帝国边境)'], vignette: '你曾是阴影中的传奇，如今只想过上平静的生活，但麻烦总会找上门。你的技艺并未生疏。' },
+                    '被双方社会排斥者': { name: '被双方社会排斥者', cost: -5, locations: ['流浪者营地(中部平原)', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城'], vignette: '人类视你为异类，精灵视你为不洁，你只能在两个世界的夹缝中寻找自己的位置。' },
+                    '森林巡守': { name: '森林巡守', cost: 15, locations: ['精灵帝国-翡翠之心周边(林中聚落)', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城'], vignette: '你的职责是巡视广袤的森林，保护它免受外界的侵扰。一次追踪让你来到了城市。' },
+                    '吟游诗人': { name: '吟游诗人', cost: 10, locations: ['格兰萨斯帝国-首都艾瑟嘉德', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '北境公国联盟-霜铁城'], vignette: '你用歌声记录历史，传播故事，也偶尔……传递秘密。冒险是你诗歌的最好素材。' },
+                    '黑市商人': { name: '黑市商人', cost: 20, locations: ['亚人联盟-东南群岛(港口城市)', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '无尽之海-海盗港(法外之地)'], vignette: '规则与法律在你眼中只是参考，利益才是永恒的准则。哪里有钱赚，哪里就有你。' },
+                    '亚人智者': { name: '亚人智者', cost: 30, locations: ['亚人联盟-东南群岛(内陆部落)'], vignette: '你是部族的智囊，用古老的智慧和对人心的洞察力引导着族人。为了某个预言或知识，你离开了家乡。' },
+                    '宫廷顾问(前任)': { name: '宫廷顾问(前任)', cost: 45, locations: ['格兰萨斯帝国-首都艾瑟嘉德', '流浪者营地(中部平原)'], vignette: '你曾在人类的权力中心，用你的智慧为自己和族人谋取一席之地。如今你选择离开，另寻他路。' },
+                    '地脉勘探员': { name: '地脉勘探员', cost: 15, locations: ['亚人联盟-东南群岛(内陆部落)', '矮人帝国-深石堡垒外围(贸易站)', '北境公国联盟-霜铁城'], vignette: '你对大地有着天生的敏感，能轻易找到隐藏的矿脉和地下通道。你在追寻一条传说中的矿脉。' },
+                    '信使': { name: '信使', cost: 5, locations: ['格兰萨斯帝国-首都艾瑟嘉德', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '北境公国联盟-霜铁城'], vignette: '你的速度是你的生命，为各个势力传递着重要的信息。这份工作让你见多识广。' },
+                    '角斗冠军': { name: '角斗冠军', cost: 40, locations: ['格兰萨斯帝国-诺瓦·瓦伦蒂亚城'], vignette: '你从血与沙中崛起，赢得了自由和荣耀，也引来了无数挑战和阴谋。你渴望更真实的战斗。' },
+                    '自然守护者(见习)': { name: '自然守护者(见习)', cost: 25, locations: ['精灵帝国-翡翠之心周边(林中聚落)'], vignette: '你立誓守护自然，舍弃了世俗的身份，与森林融为一体。你的导师派你外出历练。' },
+                    '啤酒酿造师': { name: '啤酒酿造师', cost: 10, locations: ['矮人帝国-深石堡垒外围(贸易站)', '北境公国联盟-霜铁城'], vignette: '你的啤酒是矮人和北境人生命中不可或缺的一部分，也是最好的情报来源。你外出是为了寻找传说中的泉水。' },
+                    '被神祇遗弃者': { name: '被神祇遗弃者', cost: -15, locations: ['流浪者营地(中部平原)', '高危-魔族前线哨站(废弃)'], vignette: '你曾是虔诚的信徒，却因一次意外或质疑而被你的神祇抛弃。如今，你只为自己而活，内心充满了迷茫或怨恨。' },
+                    '皇家狮鹫骑士学徒': { name: '皇家狮鹫骑士学徒', cost: 35, locations: ['格兰萨斯帝国-首都艾瑟嘉德'], vignette: '你梦想着翱翔天际，成为帝国最耀眼的空中骑士，但首先，你得通过严酷的训练，或者…完成一项秘密任务。' },
+                    '城市卫兵新兵': { name: '城市卫兵新兵', cost: 0, locations: ['格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '北境公国联盟-霜铁城', '格兰萨斯帝国-金谷城'], vignette: '为了糊口或守护家园，你加入了城市卫队。巡逻、训练和偶尔的冲突就是你的日常。' },
+                    '行商': { name: '行商', cost: 10, locations: ['格兰萨斯帝国-金谷城', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城', '北境公国联盟-灰石镇'], vignette: '你穿梭于各个城镇之间，贩卖商品，收集信息，寻找着发财的机会。' },
+                    '屋顶跑者': { name: '屋顶跑者', cost: 10, locations: ['格兰萨斯帝国-首都艾瑟嘉德', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城'], vignette: '城市的屋顶是你的捷径，你以传递信息或运送“特殊”货物为生。' },
+                    '占星师学徒': { name: '占星师学徒', cost: 15, locations: ['碧之塔(魔法学院都市)', '亚人联盟-东南群岛(内陆部落)'], vignette: '你学习解读星辰的轨迹，试图从中窥探命运的丝线。' },
+                    '草药师学徒': { name: '草药师学徒', cost: 5, locations: ['开拓村-溪谷镇(帝国边境)', '亚人联盟-东南群岛(内陆部落)', '精灵帝国-翡翠之心周边(林中聚落)'], vignette: '你在学习辨认和使用各种草药，为村庄或部族提供治疗。' },
+                    '部落战士': { name: '部落战士', cost: 10, locations: ['亚人联盟-东南群岛(内陆部落)', '北境公国联盟(边缘部落)'], vignette: '你是部落的守护者，用力量和勇气捍卫家园。' },
+                    '古籍管理员': { name: '古籍管理员', cost: 15, locations: ['精灵帝国-翡翠之心周边(林中聚落)', '碧之塔(魔法学院都市)', '格兰萨斯帝国-首都艾瑟嘉德'], vignette: '你守护着古老的知识，沉浸在书卷的世界中。为了寻找一本失落的书籍而外出。' },
+                    '矿工': { name: '矿工', cost: -5, locations: ['矮人帝国-深石堡垒外围(贸易站)', '北境公国联盟-霜铁城', '帝国-边境要塞(西部山区)'], vignette: '你在黑暗的矿坑中挥洒汗水，与岩石和危险为伴。或许你挖到了不该挖的东西。' },
+                    '黑市角斗士': { name: '黑市角斗士', cost: 10, locations: ['黑市(地下网络入口)', '格兰萨斯帝国-诺瓦·瓦伦蒂亚城'], vignette: '你在不见天日的地下竞技场为生存和金钱而战，每一次胜利都可能引来更大的麻烦。' },
+                    '边境斥候': { name: '边境斥候', cost: 10, locations: ['帝国-边境要塞(西部山区)', '北境公国联盟-灰石镇', '精灵帝国-翡翠之心周边(林中聚落)'], vignette: '你在文明的边缘巡逻，监视着异族或魔物的动向，熟悉荒野生存。'} // Added identity
+                },
+                locations: { // Based on uid:6, uid:8, uid:14, uid:33 - Added more specific sub-locations and risk indicators
+                    '格兰萨斯帝国-首都艾瑟嘉德': { cost: 0 },
+                    '格兰萨斯帝国-诺瓦·瓦伦蒂亚城': { cost: 10 }, // Major city, slight cost
+                    '格兰萨斯帝国-金谷城': { cost: -5 }, // Agricultural hub, lower cost
+                    '格兰萨斯帝国-铁炉堡': { cost: 5 }, // Military/Industrial, neutral cost
+                    '北境公国联盟-霜铁城': { cost: 0 }, // Major northern city
+                    '北境公国联盟-灰石镇': { cost: -5 }, // Southern gate, trade hub
+                    '北境公国联盟-白港': { cost: 5 }, // Coastal, resource trade
+                    '北境公国联盟(边缘部落)': { cost: -10}, // Added more remote North location
+                    '亚人联盟-东南群岛(港口城市)': { cost: -5 }, // Accessible port
+                    '亚人联盟-东南群岛(内陆部落)': { cost: -10 }, // More remote, lower cost
+                    '精灵帝国-翡翠之心周边(林中聚落)': { cost: 20 }, // Secluded, higher cost to start integrated
+                    '矮人帝国-深石堡垒外围(贸易站)': { cost: 5 }, // Trade access point
+                    '高危-魔族前线哨站(废弃)': { cost: -30 }, // High risk, point gain
+                    '高危-古代遗迹入口': { cost: -20 }, // High risk, point gain
+                    '开拓村-溪谷镇(帝国边境)': { cost: -15 }, // Frontier, point gain
+                    '龙眠神殿外围(隐秘山谷)': { cost: 60 }, // Very exclusive, high cost
+                    '流浪者营地(中部平原)': { cost: -5 }, // Basic, cheap start
+                    '帝国-边境要塞(西部山区)': { cost: 15 }, // Military zone, moderate cost
+                    '碧之塔(魔法学院都市)': { cost: 40 }, // Center of magic, high cost
+                    '无尽之海-海盗港(法外之地)': { cost: -10 }, // Lawless, point gain
+                    '黑市(地下网络入口)': { cost: 10 }, // Access to underworld, slight cost
+                    '世界树神殿(中立圣地)': { cost: 50 }, // Protected, rare start, high cost
+                },
+                 equipments: [ // Expanded based on common RPG gear and uid:36
+                    // Common
+                    { name:'布衣', cost:1, rarity:'common', description:'最基础的衣物，几乎没有防护力。' },
+                    { name:'木棍', cost:2, rarity:'common', description:'最基础的武器，聊胜于无。' },
+                    { name:'农用镰刀', cost:3, rarity:'common', description:'可以作为临时的武器，但并不顺手。' },
+                    { name:'破旧的皮甲', cost:5, rarity:'common', description:'勉强能提供一些防护的基础皮甲，有多处磨损。' },
+                    { name:'旅行者斗篷', cost:5, rarity:'common', description:'能遮风挡雨，让你在人群中不那么显眼。' },
+                    { name:'生锈的短剑', cost:5, rarity:'common', description:'比拳头好用，但需要经常打理，容易卷刃。' },
+                    { name:'木制小圆盾', cost:8, rarity:'common', description:'能挡开一些攻击，但别指望它能挡住战斧。' },
+                    { name:'粗制短弓与箭矢(10)', cost:10, rarity:'common', description:'需要足够的力量才能有效使用，射程和精度有限。' },
+                    // Uncommon
+                    { name:'基础法杖', cost:18, rarity:'uncommon', description:'引导魔力的基础工具，能微弱增幅施法专注度。' },
+                    { name:'硬皮甲', cost:18, rarity:'uncommon', description:'经过处理的硬质皮革制成，比普通皮甲更坚韧，活动也相对灵活。' },
+                    { name:'标准的锁子甲', cost:20, rarity:'uncommon', description:'为士兵提供的制式装备，提供了不错的防护，但比较沉重。' },
+                    { name:'学徒法袍', cost:20, rarity:'uncommon', description:'上面绣有基础的魔力纹路，有助于集中精神，提供微弱魔法抗性。' },
+                    { name:'锋利的长剑', cost:25, rarity:'uncommon', description:'一把保养良好、开刃锋利的钢制长剑，在战场上值得信赖。' },
+                    { name:'钢制鸢形盾', cost:25, rarity:'uncommon', description:'可以有效抵挡箭矢和劈砍，覆盖面积较大。' },
+                    { name:'战锤', cost:26, rarity:'uncommon', description:'对重甲单位和骨骼类敌人有奇效，破甲能力强。' },
+                    { name:'手半剑', cost:28, rarity:'uncommon', description:'平衡了速度与力量的实用武器，可单手或双手使用。' },
+                    { name:'精灵祝福短弓与箭矢(20)', cost:30, rarity:'uncommon', description:'由精灵工匠祝福过的短弓，射击精度更高，弓身更轻巧。' },
+                    // Rare
+                    { name:'矮人符文战斧', cost:40, rarity:'rare', description:'斧面上镌刻着基础的力量符文，劈砍更为有力，不易损坏。' },
+                    { name:'骑士板甲(半身)', cost:45, rarity:'rare', description:'保护上半身的关键部位，提供优秀的物理防御，兼顾一定的灵活性。' },
+                    { name:'猎手长弓与附魔箭矢(10)', cost:50, rarity:'rare', description:'射程更远，穿透力更强，箭矢附带微弱元素伤害（随机）。' },
+                    { name:'影袭匕首', cost:50, rarity:'rare', description:'由特殊合金打造，轻便且锋利，淬有麻痹毒素，适合从阴影中发起攻击。' },
+                    { name:'秘银锁子甲', cost:55, rarity:'rare', description:'由秘银编织而成，轻便而坚韧，对魔法有良好的抗性。'},
+                    { name:'魔导师法袍', cost:55, rarity:'rare', description:'能微量提升法术强度，加快魔力恢复速度，是法师们的挚爱。' },
+                    { name:'精制全身板甲', cost:60, rarity:'rare', description:'工艺精良的全身板甲，防御力出众，关节处经过特殊处理，略优于普通板甲。'},
+                    { name:'祝福大剑', cost:65, rarity:'rare', description:'受过圣光祝福的双手大剑，对亡灵和恶魔有额外伤害，剑身散发微光。' },
+                    // Epic
+                    { name:'影舞者软靴', cost:100, rarity:'epic', description:'由阴影豹皮制成，穿上它，你的脚步将如同猫一样无声，并能短暂（数秒）提升移动速度。' },
+                    { name:'月神祭祀长袍', cost:105, rarity:'epic', description:'由月光丝织成，能吸收月光缓慢恢复精神力，并强化治疗与防护（月光系）法术。'},
+                    { name:'炎阳法杖', cost:110, rarity:'epic', description:'杖头的宝石中封印着太阳的能量，极大增幅火焰法术，并能每天释放一次“日炎爆发”。' },
+                    { name:'狮心王之铠', cost:120, rarity:'epic', description:'传说中一位人类国王的铠甲，能鼓舞周围友军的士气（提供勇气光环），并提供强大的物理和魔法抗性。' },
+                    { name:'风暴战锤', cost:120, rarity:'epic', description:'挥动时能引来风雷之声，攻击带有连锁闪电效果（小概率触发），能震慑敌人（意志检定）。' },
+                    // Legendary
+                    { name:'虚空行者斗篷', cost:200, rarity:'legendary', description:'由深渊位面特殊生物的皮革制成，能让你每天短暂（数分钟）融入暗影位面，进行隐匿或快速移动。' },
+                    { name:'永恒壁垒', cost:220, rarity:'legendary', description:'传说中矮人王持有过的塔盾，据说无法被任何物理攻击摧毁，并能反弹部分指向性魔法。' },
+                    { name:'星辰编织者法杖', cost:240, rarity:'legendary', description:'据说杖头镶嵌的是星辰的碎片，能引动星辰之力，极大增强预言系和塑能系（星辰/奥术）法术，减少施法时间。'},
+                    { name:'圣剑“晨曦”', cost:250, rarity:'legendary', description:'黎明的第一缕光辉铸成的圣剑，拥有净化一切邪恶的力量，对黑暗生物造成巨大伤害，能释放“黎明之光”。' },
+                    // Mythic
+                    { name:'世界树之心护符', cost:450, rarity:'mythic', description:'蕴含世界树生命力的护符，能缓慢再生佩戴者的伤势（即使在战斗中），并在濒死时提供一次强大的治愈（有冷却时间）。'},
+                    { name:'弑神之枪“终焉”', cost:500, rarity:'mythic', description:'神话时代的武器，据说曾弑杀过一位陨落的神祇，拥有湮灭法则的力量，对神性存在有特效，凡人几乎无法驾驭（可能反噬）。' }
+                ],
+                items: [ // Expanded based on RPG staples and uid:36
+                    // Common
+                    { name:'水袋(满)', cost:2, rarity:'common', description:'维持生命的基本需求。'},
+                    { name:'打火石与火绒', cost:3, rarity:'common', description:'生火的基础工具。'},
+                    { name:'一袋干粮', cost:5, rarity:'common', description:'足够你吃上几天，味道就别指望了。' },
+                    { name:'一捆绳索(10米)', cost:5, rarity:'common', description:'冒险家的好朋友，攀爬、捆绑皆可。' },
+                    { name:'火把 x2', cost:5, rarity:'common', description:'驱散黑暗与寒冷，持续约1小时。' },
+                    { name:'基础草药包', cost:8, rarity:'common', description:'包含一些止血和缓解疼痛的基础草药。'},
+                    { name:'金币袋(20枚)', cost:10, rarity:'common', description:'初始携带20枚金币。购买力参考: 可买10块黑面包或住几天通铺。' },
+                    { name:'微光法力药水 x2', cost:10, rarity:'common', description:'能恢复少量法力值(约15MP)的基础药水。'},
+                    { name:'微光治疗药水 x3', cost:15, rarity:'common', description:'能恢复少量生命值(约20HP)的基础药水。' },
+                    // Uncommon
+                    { name:'简易地图(周边区域)', cost:10, rarity:'uncommon', description:'描绘了你起始地点附近的区域，可能不太准确。'},
+                    { name:'欺诈者的硬币', cost:15, rarity:'uncommon', description:'一枚奇特的硬币，抛出时总能如你所愿地落在你想要的那一面（每天限用一次）。' },
+                    { name:'解毒剂 x1', cost:18, rarity:'uncommon', description:'能解除一些常见的毒素效果。'},
+                    { name:'万能钥匙', cost:20, rarity:'uncommon', description:'能打开大部分普通的锁，有损坏几率。' },
+                    { name:'炼金之火 x2', cost:25, rarity:'uncommon', description:'扔出去会引发小范围的火焰(约10点火焰伤害)。' },
+                    { name:'一瓶精灵族的月光露水', cost:25, rarity:'uncommon', description:'恢复法力的效果优于普通药剂(约40MP)。' },
+                    { name:'一封未寄出的信', cost:5, rarity:'uncommon', description:'故事引子：信封上没有收件人，但内容指向一个被遗忘的宝藏或秘密。' },
+                    // Rare
+                    { name:'帝国军用指北针', cost:35, rarity:'rare', description:'帝国制式装备，在任何环境下都能精准指向北方，并能感知微弱魔力波动。' },
+                    { name:'中级治疗药剂 x1', cost:40, rarity:'rare', description:'能瞬间恢复可观的生命值(约100HP)。' },
+                    { name:'抗性药水(随机元素) x1', cost:45, rarity:'rare', description:'短时间内大幅提升对某种元素的抗性。'},
+                    { name:'次级隐身药水 x1', cost:50, rarity:'rare', description:'喝下后能让你隐身约1分钟，攻击或施法会打破效果。' },
+                    { name:'记忆水晶(空白)', cost:55, rarity:'rare', description:'可以记录一段影像或声音的魔法水晶，容量有限。' },
+                    { name:'便携炼金工具', cost:60, rarity:'rare', description:'让你能在野外制作基础和部分进阶药剂(需材料和配方)。' },
+                    // Epic
+                    { name:'高等鉴定卷轴 x1', cost:80, rarity:'epic', description:'能鉴定出大部分稀有及以下品质魔法物品的属性。'},
+                    { name:'替身人偶', cost:100, rarity:'epic', description:'在你受到致命伤害时，它会代替你承受并被摧毁(一次性)。' },
+                    { name:'龙血精华(微量)', cost:120, rarity:'epic', description:'饮用后能永久提升1点体质(仅首次有效)。' },
+                    { name:'一小袋神性之尘', cost:130, rarity:'epic', description:'陨落神祇的残骸，是制作强大魔法物品或进行神圣仪式的珍贵材料。' },
+                    { name:'次元袋(小型)', cost:150, rarity:'epic', description:'一个拥有额外空间的袋子，能装下约50公斤的物品，不计体积。' },
+                    // Legendary
+                    { name:'世界之喉的地图碎片', cost:180, rarity:'legendary', description:'故事引子：指向传说中巨龙圣地的地图，据说那里隐藏着创世的秘密。' },
+                    { name:'空间道标', cost:250, rarity:'legendary', description:'可以设置一个传送点的魔法信标(一次性设置，需配合传送法术或卷轴)。'},
+                    { name:'不死鸟之羽', cost:280, rarity:'legendary', description:'传说中的神鸟羽毛，蕴含强大的复活之力(需配合仪式，消耗巨大)。' },
+                    { name:'贤者之石的碎片', cost:300, rarity:'legendary', description:'蕴含着庞大的魔力，是所有炼金术士的终极梦想，能极大增强炼金效果或作为强大法术的核心。' },
+                    // Mythic
+                    { name:'空白的命运石板', cost:550, rarity:'mythic', description:'传说中可以记录甚至改写命运的神器碎片，但无人知晓其使用方法，散发着难以言喻的气息。'},
+                    { name:'世界树的嫩芽', cost:600, rarity:'mythic', description:'蕴含着无尽生命力的神话级物品，据说能让一片荒漠在一天内变为森林，也能让将死之人重获新生(效果强大但使用条件苛刻，可能引来觊觎)。' }
+                ],
+                skills: [ // Expanded based on RPG skills and uid:34 Magic System
+                    // Common (凡阶 Tier 1: Lvl 1-10)
+                    { name:'技艺：基础格挡', cost:8, rarity:'common', description:'【技艺】主动动作：使用武器或盾牌格挡攻击，短时间内提升物理防御力。' },
+                    { name:'天赋：基础感知', cost:10, rarity:'common', description:'【天赋】被动：你对周围的环境变化更敏感，小幅提升侦察和察觉陷阱的能力，不易被偷袭。'},
+                    { name:'技艺：强力一击', cost:10, rarity:'common', description:'【技艺】主动动作：牺牲少许命中率(-10%)，进行一次威力增加(+20%)的近战攻击。' },
+                    { name:'技艺：紧急包扎', cost:10, rarity:'common', description:'【技艺】主动动作：消耗体力，为自己或他人进行一次简单的包扎以止血，缓慢恢复少量HP。' },
+                    { name:'技艺：基础潜行', cost:12, rarity:'common', description:'【技艺】主动动作：尝试在阴影或遮蔽物中隐藏自己，降低被发现的几率。' },
+                    { name:'天赋：体格健壮', cost:15, rarity:'common', description:'【天赋】被动：你的负重能力提升10%，生命值上限提升5%。' },
+                    { name:'天赋：雄辩', cost:15, rarity:'common', description:'【天赋】被动：你的言语更有说服力，在交易、说服、唬骗等社交检定中获得小幅优势。' },
+                    // Uncommon (凡阶 Tier 2: Lvl 11-15 / 超凡 Tier 1: Lvl 16-22)
+                    { name:'技艺：光亮术', cost:15, rarity:'uncommon', description:'【技艺-神圣/奥术】主动动作：消耗少量魔力，制造一个可持续一段时间的移动光源。'},
+                    { name:'技艺：武器娴熟(选择一项)', cost:20, rarity:'uncommon', description:'【技艺】被动：选择一种武器类别（如长剑、战斧、弓），使用该类别武器时命中率和伤害略有提升(+5%)。'},
+                    { name:'技艺：威吓', cost:20, rarity:'uncommon', description:'【技艺】主动动作：通过言语或姿态威胁目标，有几率让弱小的敌人陷入恐惧或放弃抵抗(基于意志对抗)。' },
+                    { name:'天赋：巧手', cost:20, rarity:'uncommon', description:'【天赋】被动：你在进行偷窃、开锁、解除陷阱等精细操作时更加得心应手，成功率提升。' },
+                    { name:'技艺：火花术', cost:20, rarity:'uncommon', description:'【技艺-元素】主动动作：消耗魔力，射出一束火花攻击敌人(造成少量火焰伤害)。' },
+                    { name:'天赋：坚韧', cost:22, rarity:'uncommon', description:'【天赋】被动：你的体质获得提升(+1)，更难被击倒，对毒素和疾病有微弱抗性。'},
+                    { name:'技艺：精准射击', cost:25, rarity:'uncommon', description:'【技艺】主动动作：花费更多时间瞄准，大幅提升下一次远程攻击的命中率(+25%)和暴击率。' },
+                    { name:'技艺：次级治疗术', cost:25, rarity:'uncommon', description:'【技艺-神圣/生命】主动动作：消耗魔力，引导能量治疗目标的中量伤口(恢复中量HP)。' },
+                    { name:'天赋：动物伙伴(小型)', cost:30, rarity:'uncommon', description:'【天赋】被动：你获得一只忠诚的小型动物伙伴（如猫、猎鹰、狐狸）与你并肩作战，主要提供侦察或干扰。' },
+                    // Rare (超凡 Tier 2: Lvl 23-30 / 英雄 Tier 1: Lvl 31-?)
+                    { name:'种族技艺：森林低语(精灵/半精灵)', cost:20, rarity:'rare', description:'【种族技艺】被动/主动：仅限精灵/半精灵。在森林环境中极大提升感知、隐匿能力，并能与部分植物进行简单沟通。' },
+                    { name:'种族技艺：大地感应(矮人)', cost:20, rarity:'rare', description:'【种族技艺】被动/主动：仅限矮人。在地底环境中，你能清晰感知到周围的结构、矿脉和生物活动。' },
+                    { name:'技艺：防护箭矢', cost:30, rarity:'rare', description:'【技艺-奥术】主动动作：消耗魔力，制造一个临时的魔法护盾，能有效抵挡普通箭矢和投掷物。'},
+                    { name:'天赋：双持武器', cost:35, rarity:'rare', description:'【天赋】被动：你可以双手同时使用单手武器进行攻击，但会略微降低命中率(-15%)，副手攻击伤害减半。' },
+                    { name:'天赋：剑术奇才', cost:35, rarity:'rare', description:'【天赋】被动：学习任何剑技时都有额外加成，成长速度加快，所有剑类武器伤害+5%。' },
+                    { name:'技艺：火焰箭', cost:38, rarity:'rare', description:'【技艺-元素】主动动作：消耗魔力，为你的箭矢附加火焰伤害，持续一段时间或数次攻击。'},
+                    { name:'技艺：召唤元素仆役(小型)', cost:40, rarity:'rare', description:'【技艺-元素】主动动作：消耗魔力，从元素界召唤一个小型元素生物为你作战(可持续数分钟)。' },
+                    { name:'天赋：魔力亲和', cost:40, rarity:'rare', description:'【天赋】被动：提升所有法术效果10%，降低10%消耗，对魔法抵抗力提升。' },
+                    { name:'技艺：暗影步', cost:45, rarity:'rare', description:'【技艺-暗影】主动动作：消耗魔力，让你能短距离(10米)穿梭于阴影之中，完成一次快速位移。' },
+                    { name:'天赋：快速学习', cost:50, rarity:'rare', description:'【天赋】被动：你在学习任何知识和技能时，都能更快地掌握要领(所有经验获取+10%)。' },
+                     // Epic (英雄 Tier 2: Lvl ?-45 / 传奇 Tier 1: Lvl 46-?)
+                    { name:'种族技艺：龙威(龙裔族)', cost:80, rarity:'epic', description:'【种族技艺】主动动作：仅限龙裔。消耗大量体力/能量，释放先祖的威压，震慑周围意志薄弱的敌人(范围效果，意志检定)。' }, // Matched race name
+                    { name:'技艺：圣言：庇护', cost:90, rarity:'epic', description:'【技艺-神圣】主动动作：吟唱圣言，消耗大量魔力，创造一个临时的神圣领域，大幅提升范围内友军的防御和抗性。' },
+                    { name:'技艺：镜像术', cost:95, rarity:'epic', description:'【技艺-奥术/精神】主动动作：消耗魔力，制造数个虚假的自身幻影来迷惑敌人，分摊被攻击的几率。'},
+                    { name:'天赋：武器大师(选择一项)', cost:100, rarity:'epic', description:'【天赋】被动：选择一种武器类别，你对该武器的掌握达到极致，提升伤害、暴击率，并可能解锁特殊招式。'},
+                    { name:'技艺：连锁闪电', cost:100, rarity:'epic', description:'【技艺-元素】主动动作：消耗大量魔力，释放一道能在最多3个敌人之间跳跃的强力闪电。' },
+                    { name:'天赋：炼金术大师', cost:100, rarity:'epic', description:'【天赋】被动：你对炼金术有着惊人的天赋，能创造出独一无二的药剂，极大提升制作成功率和效果，并能识别稀有材料。' },
+                    { name:'天赋：第六感', cost:110, rarity:'epic', description:'【天赋】被动：你对危险有野兽般的直觉，极难被伏击，大幅提升闪避几率和对陷阱的察觉。' },
+                    { name:'天赋：王者血脉(微弱)', cost:120, rarity:'epic', description:'【天赋】被动：你的言行举止天然带有一种威严，更容易说服和领导他人(魅力相关判定+2)，并能微弱抵抗精神控制。' },
+                     // Legendary (传奇 Tier 2: Lvl ?-60 / 史诗 Tier 1: Lvl 61-?)
+                    { name:'天赋：巨龙之魂(觉醒)', cost:280, rarity:'legendary', description:'【天赋】被动：你的灵魂中寄宿着巨龙的力量，各项属性获得巨大加成(+2)，完全掌握龙语能力，并能使用一次威力不俗的元素吐息(有冷却)。' },
+                    { name:'天赋：不死之躯(伪)', cost:290, rarity:'legendary', description:'【天赋】被动：你的恢复能力极其强大，即使受到重创也能缓慢恢复(战斗外效果更佳)，对即死效果有较高抗性。'},
+                    { name:'技艺：流星爆', cost:300, rarity:'legendary', description:'【技艺-元素/奥术】主动动作：引导星辰之力，消耗巨量魔力，从天空中召唤数颗陨石，对指定区域进行毁灭性打击(需长时间引导，威力巨大)。' },
+                    { name:'技艺：时间静止(残)', cost:320, rarity:'legendary', description:'【技艺-奥术/禁忌】主动动作：消耗恐怖的魔力与精神力，让以你为中心的小范围区域时间完全静止3秒钟(每天限用一次，且使用后会陷入虚弱)。' },
+                    { name:'天赋：命运之子', cost:350, rarity:'legendary', description:'【天赋】被动：你被世界意志所眷顾，每天一次，你可以在关键时刻强制重掷一次失败的关键判定(如攻击、豁免、技能检定)。' },
+                     // Mythic (史诗 Tier 2: Lvl ?-75 / 半神)
+                    { name:'天赋：神性火花', cost:800, rarity:'mythic', description:'【天赋】被动：你的灵魂中燃起了一丝微弱的神性，你开始能触碰到世界的底层法则，所有能力获得微弱的神性加成，并获得一个雏形的神性领域(效果微弱但潜力无限)。' }
+                ],
+                negativeTraits: [ // Expanded
+                    // Common
+                    { name:'胆小', points:10, rarity:'common', description:'面对危险和强大的敌人时，你更容易陷入恐慌状态(意志豁免-1)。'},
+                    { name:'路痴', points:10, rarity:'common', description:'你完全没有方向感，即使有地图也可能迷路，野外生存和导航判定困难。' },
+                    { name:'傲慢', points:10, rarity:'common', description:'你很难对他人表示赞同或请求帮助，人际关系更容易恶化，魅力相关判定-1。' },
+                    { name:'贪婪', points:12, rarity:'common', description:'你对财富有着强烈的渴望，有时会为了金钱做出不明智的决定，易受贿赂。'},
+                    { name:'体弱多病', points:15, rarity:'common', description:'你的体质属性有上限(-2)，更容易生病，对环境变化更敏感，体力恢复较慢。' },
+                    // Uncommon
+                    { name:'洁癖', points:15, rarity:'uncommon', description:'你无法忍受肮脏的环境，在野外或地下城中会感到不适，可能影响专注度。'},
+                    { name:'易怒', points:18, rarity:'uncommon', description:'你的脾气很暴躁，容易因为小事与人发生冲突，难以保持冷静。'},
+                    { name:'嗜赌成性', points:20, rarity:'uncommon', description:'你无法抗拒赌博的诱惑，有几率在城镇中挥霍掉部分金钱，并可能欠下债务。' },
+                    { name:'社交恐惧', points:20, rarity:'uncommon', description:'在人群中或与陌生人交谈时，你会感到极度紧张和不适，所有魅力判定-2。' },
+                    { name:'噩梦缠身', points:25, rarity:'uncommon', description:'你的过去让你夜不能寐，精神力恢复速度减半，容易疲劳，意志豁免-1。' },
+                    // Rare
+                    { name:'异种恐惧', points:28, rarity:'rare', description:'你对某个特定种族（非自身种族，如兽人、精灵、亡灵等）抱有强烈的非理性恐惧或厌恶。'},
+                    { name:'言出法随(反向)', points:30, rarity:'rare', description:'你的乌鸦嘴很灵。当你或你的同伴说出“应该没问题”、“太简单了”之类的话时，有极高几率会立刻发生意外(增加遭遇检定)。' },
+                    { name:'被诅咒者(势力敌视)', points:30, rarity:'rare', description:'开局即被一个主要势力（如帝国、教廷、某个公国）通缉或敌视，在该势力范围内行动极其困难。' },
+                    { name:'深渊印记', points:35, rarity:'rare', description:'你的身上有深渊留下的印记，野兽和圣职者会本能地厌恶和警惕你，易吸引低阶魔物，圣光治疗效果减弱。' },
+                    { name:'魔法白痴', points:40, rarity:'rare', description:'你无法学习和使用任何法术(智力/精神相关技能受限)，对魔法物品的感知力极低，但获得额外点数(30点)投入到物理系能力。' },
+                     // Epic
+                    { name:'过敏体质(多种)', points:50, rarity:'epic', description:'你对多种常见物品（如酒精、花粉、特定金属、阳光、圣水）过敏，误触会导致属性下降、持续伤害或负面状态。' },
+                    { name:'荣誉束缚', points:55, rarity:'epic', description:'你恪守某种骑士或武士信条，无法使用偷袭、下毒、背后攻击等“不光彩”的手段，即使在生死关头。'},
+                    { name:'天煞孤星', points:60, rarity:'epic', description:'你的命运对周围人过于沉重，与你关系密切的伙伴会更容易遭遇不幸，甚至死亡(需定期进行命运检定)。' },
+                    { name:'深渊低语', points:70, rarity:'epic', description:'你的脑海中时常会响起深渊的低语，诱惑你堕落。在精神力低下或意志薄弱时，有几率被临时操控或陷入疯狂(意志豁免困难)。' },
+                     // Legendary
+                    { name:'灵魂残缺', points:180, rarity:'legendary', description:'你的灵魂不完整，导致你无法完全掌控自身力量，精神上限降低30%，且更容易被精神控制、腐化或魅惑。'},
+                    { name:'世界弃儿', points:200, rarity:'legendary', description:'你被世界意志所厌弃，你的“运气”永远是负值。所有好事都与你无缘，所有坏事都如影随形(所有判定承受巨大减值-3，幸运相关事件必然失败)。' },
+                     // Mythic
+                    { name:'神祇仇视', points:350, rarity:'mythic', description:'一位强大的神祇（非主神，如战争之神、瘟疫之神等）将你视为眼中钉，其信徒和代理人会不遗余力地追杀你，甚至可能引来神祇的直接干预。'}
+                ],
+                redThreads: [ // Updated list based on provided characters uid:9, uid:39, uid:306575, uid:876524, uid:894920, uid:42
+                    // Uncommon
+                    { name:'钢拳(半巨人保镖)', cost:90, rarity:'uncommon', description:'一位被你从奴隶主手中解放的半巨人(超凡阶)，心思单纯，绝对忠诚。' },
+                    // Rare
+                    { name:'莉安娜·月歌(精灵魔女)', cost:120, rarity:'rare', description:'一位对世间万物充满好奇的年轻精灵法师(超凡阶高阶)。' },
+                    { name:'“夜猫”(传奇盗贼)', cost:130, rarity:'rare', description:'一位技艺高超的女盗贼(英雄阶初阶)，你的出现颠覆了她的盗贼美学。' },
+                    { name:'赫尔加(符文祭司学徒)', cost:140, rarity:'rare', description:'一位对符文充满热情的矮人祭司天才(超凡阶)，坚信你是‘神之使者’。' },
+                    // Epic
+                    { name:'布伦希尔德(北境女爵)', cost:150, rarity:'epic', description:'北境公国一位年轻而坚韧的女领主(英雄阶)，她视你为拯救北境长夜的‘火种’。' },
+                    { name:'伊索尔德(荆棘玫瑰队长)', cost:160, rarity:'epic', description:'一位实力强大的佣兵团长(英雄阶高阶)，渴望被更强者征服。' },
+                    { name:'阿斯特丽德', cost:180, rarity:'epic', description:'深渊的魅魔公主，莉莉丝之女(史诗阶72级)。她将你视为她宏大计划中最有趣的‘变数’。' },
+                    { name:'塞拉菲娜·光语者', cost:180, rarity:'epic', description:'帝国守护者与总元帅(史诗阶66级)。她视你为能重振帝国荣耀的‘圣剑’。' },
+                    { name:'瓦莱里娅·夜影', cost:180, rarity:'epic', description:'帝国的暗影之瞳，首席宫廷法师(史诗阶68级)。她将你视为唯一无法被她看透的‘谜题’。' },
+                    { name:'千代・星守', cost:200, rarity:'epic', description:'狐族大贤者，亚人联盟的首席祭祀(史诗阶70级)。她对你的‘命运’充满了极致的好奇。' },
+                    // Legendary
+                    { name:'莱拉-银树', cost:250, rarity:'legendary', description:'翡翠之母的首席神眷者(从神阶91级)。她等待了万年，似乎在你身上看到了熟悉的影子。' },
+                    // Mythic
+                ],
+                relationships: { // Added relationships for new characters and expanded existing ones
+                    '千代・星守': [{ name: '被指引者', cost: 0, vignette: '你因命运的指引找到她，向这位传说中的贤者寻求智慧，你们的关系始于求知与观察。'}, { name: '意外的救助者', cost: 10, vignette: '你在她面前无意间化解了一次针对她的危机，这引起了她对你这位“变数”的极大兴趣。'}, { name: '星辰的预兆', cost: 5, vignette: '你的出现印证了她星盘中的一个古老预言，她决心观察你的轨迹，试图解读你的未来。'}],
+                    '阿斯特丽德': [{ name: '有趣的棋子', cost: 0, vignette: '你的某种特质引起了这位魔族公主的兴趣，她将你视为宏大计划中一枚有趣的棋子，你们的关系始于算计与试探。'}, { name: '宿命之敌', cost: -20, vignette: '你们天生对立，却又被命运如磁石般吸引。你们的关系始于警惕与对抗，充满了相爱相杀的张力。'}, { name: '合作的可能', cost: 5, vignette: '你在某个事件中展现了非凡的潜力，让她觉得你或许能成为一个有用的（暂时）盟友，以达成她的某个目标。'}, { name:'被魅惑者', cost: 15, vignette:'她的魅力让你难以抗拒，你心甘情愿（至少表面上）追随她，渴望取悦这位深渊公主。'} ],
+                    '塞拉菲娜·光语者': [{ name: '麾下新兵', cost: 0, vignette: '你是她麾下的一名新兵，前途未卜。你们的关系始于严格的上下级，和遥远的仰望。'}, { name: '战场同袍', cost: 15, vignette: '你们曾在一次惨烈的战斗中并肩作战，互相救助过对方，结下了战火中的情谊，她认可你的勇气。'}, { name: '被审判的异端嫌疑人', cost: -10, vignette: '你的某些行为或能力引起了她的警惕，她正在暗中调查你是否与异端或邪魔有关，态度冰冷。'}, { name: '值得培养的将才', cost: 10, vignette: '你在训练或实战中展现了出色的指挥才能或战斗技巧，引起了她的注意和培养兴趣。'}],
+                    '瓦莱里娅·夜影': [{ name: '被审问的异常样本', cost: -10, vignette: '你因不明原因被她的情报网所捕获，她对你这个‘幽灵’充满了警惕与探究欲。'}, { name: '提供情报的线人', cost: 5, vignette: '你主动向她提供了一份关键情报，以此为契机进入了她的视野，但信任尚未建立，关系是纯粹的交易。'}, { name: '魔法研究的助手', cost: 10, vignette: '你在魔法方面展现了独特的才能或拥有特殊知识，被她选中作为研究的助手或观察对象。'}, { name:'潜在的威胁', cost: -5, vignette:'她通过预言或情报察觉到你可能对帝国构成威胁，正在不动声色地监视你。'}],
+                    '莱拉-银树': [{ name: '迷途的羔羊', cost: 0, vignette: '你在森林深处遇见了她，她感受到了你灵魂的特殊，决定给予你一些指引，关系始于神性的悲悯。'}, { name: '自然平衡的破坏者(嫌疑)', cost: -15, vignette: '你的某些行为似乎触动了自然的平衡，引起了她的警惕与审视，她可能会出手阻止你。'}, { name: '古老契约的继承者', cost: 20, vignette: '你身上携带着某个与她或翡翠之母相关的古老信物或契约，这让她对你另眼相看，并负有某种责任。'}, { name: '寻求知识的求道者', cost: 5, vignette:'你虔诚地向她请教关于自然与生命的奥秘，你的求知欲打动了她。'}],
+                    '慕容追雪': [{ name: '唯一的师尊', cost: 0, vignette: '她是你的弟子，追随你跨越了无尽时空。这份羁绊是绝对的，无需任何言语。'}],
+                    '伊索尔德(荆棘玫瑰队长)': [{ name: '让你感兴趣的强者', cost: 10, vignette: '你听闻了她的传闻，对这位充满了力量与矛盾的女性产生了兴趣，主动找上了她，试图挑战或了解她。'}, { name: '被征服的对手', cost: 20, vignette: '在一次冲突或比试中，你以绝对的力量击败了她，从此在她心中烙下了无法磨灭的印记，她渴望再次与你交手。'}, { name:'雇主与佣兵', cost: 0, vignette:'你雇佣了她的佣兵团执行任务，你们的关系始于契约与金钱。'}],
+                    '布伦希尔德(北境女爵)': [{ name: '被捡回来的幸存者', cost: 15, vignette: '你在暴风雪中救了她，或是被她所救，你们的关系始于极端的环境和相互的扶持与感激。'}, { name: '来自帝都的特使', cost: 5, vignette: '你以帝国特使的身份来到北境，与这位年轻的统治者进行政治交涉，关系始于公务。'}, { name:'共同的敌人', cost: 10, vignette:'你们都面临着来自北方魔物或内部叛徒的威胁，为了共同的目标而结盟。'}],
+                    '赫尔加(符文祭司学徒)': [{ name: '“神之使者”', cost: 25, vignette: '你在无意间给予了她神谕般的启示或展现了非凡的力量，让她将你奉为神明的使者，对你充满崇拜。'}, { name: '外来的学者', cost: 0, vignette: '你以学者的身份拜访矮人帝国，对符文充满好奇，因此结识了这位对外界同样好奇的天才。'}, { name:'技艺的竞争者', cost: -5, vignette:'你们在符文或锻造方面是竞争对手，互相视对方为需要超越的目标。'}],
+                    '“夜猫”(传奇盗贼)': [{ name: '被抓现行的盗贼', cost: 10, vignette: '你在她行窃时当场抓住了她，却没有揭发，这让她对你产生了极大的兴趣和一丝好感。'}, { name: '被雇佣的保镖', cost: -5, vignette: '她接受了一个刺杀你的任务，却发现目标远比想象中更棘手，任务失败后反而对你产生了兴趣。'}, { name:'盗贼公会的同僚', cost: 0, vignette:'你们同属一个盗贼组织，是互相利用或合作的关系。'}],
+                    '莉安娜·月歌(精灵魔女)': [{ name: '学术伙伴', cost: 10, vignette: '你们都对古代遗迹和失落魔法着迷，在一座图书馆中因一本古籍而相识。你们的关系始于共同的追求。'}, { name: '林中偶遇', cost: 0, vignette: '你在森林中迷路时遇到了她，她对你这个“闯入者”充满了警惕与好奇。'}, { name:'魔法实验的助手', cost: 5, vignette:'她正在进行一项有趣的魔法实验，而你需要你的帮助（或者你是实验对象）。'}],
+                    '钢拳(半巨人保镖)': [{ name: '被解放的奴隶', cost: 25, vignette: '你将他从角斗场中救出，他将你视为唯一的救赎，并献上永恒的忠诚。'}, { name: '佣兵同僚', cost: 10, vignette: '你们同属一个佣兵团，他庞大的身躯总能为你挡下最致命的攻击，把你当作兄弟/姐妹。'}, { name:'救命恩人', cost: 15, vignette:'你在一次危机中救了他的性命，他发誓要报答你的恩情。'}]
+                },
+                raceBackgrounds: { // Added more diverse backgrounds, ensure keys match race IDs
+                     '人族': [
+                        { name: '帝国的逃兵', description: '你曾是帝国士兵，因无法忍受腐败或目睹了可怕的秘密而逃离，如今被通缉。' },
+                        { name: '首都的孤儿', description: '你在艾瑟嘉德的街头长大，为了生存什么都做过，拥有敏锐的洞察力和生存技巧。' },
+                        { name: '新兴商会的继承人', description: '你的家族生意蒸蒸日上，但也引来了无数觊觎的目光和潜在的危险。' },
+                        { name: '偏远神殿的侍僧', description: '你侍奉着一位古老或被遗忘的神祇，带着使命或疑问离开了神殿。'},
+                        { name: '炼金术士的学徒', description: '你学习调配药剂和转化物质的神秘技艺，渴望探索世界的奥秘。'}
+                    ],
+                    '半精灵': [
+                        { name: '两个世界的边缘人', description: '你在人类和精灵社会都难以完全融入，这让你学会了如何在夹缝中生存和观察。' },
+                        { name: '自然的使者', description: '你天生能与自然沟通，被森林中的古老存在选中，派往人类世界传递信息或警告。' },
+                        { name: '寻找身份的流浪者', description: '你对自己的血脉感到迷茫，踏上了寻找自己真正归属的旅程。'}
+                    ],
+                    '亚人(猫灵族)': [ // Matched key
+                        { name: '部落第一猎手', description: '你是族群中最优秀的猎人，但一次意外或一个预兆让你不得不离开家乡。' },
+                        { name: '穿梭于人类城市的信使', description: '你以灵活的身手为各个势力传递信息，也知晓了太多秘密，如今正被某方追杀。' },
+                        { name: '港口城市的盗贼', description: '你熟悉城市的阴影和屋顶，以偷窃为生，直到偷到了不该碰的东西。' }
+                    ],
+                     '亚人(狐妖族)': [ // Matched key
+                        { name: '部族未来的占卜师', description: '你拥有预知未来的天赋，一个关于灾难的预兆让你决定亲自介入命运。' },
+                        { name: '黑市情报贩子', description: '你在地下世界贩卖情报，左右逢源，但也树敌无数。' },
+                        { name: '寻求古老知识的学者', description: '你渴望掌握失落的魔法或历史，为此不惜深入险境。'}
+                    ],
+                     '亚人(兔人族)': [ // Matched key
+                        { name: '地底家园的守护者', description: '你的族人生活在地底，你负责警戒地面的威胁，一次塌方让你流落到陌生的地方。' },
+                        { name: '草药大师的弟子', description: '你跟随一位隐居的草药大师学习，如今奉师命外出寻找稀有的药材。' },
+                        { name: '反抗军的斥候', description: '你的家园被帝国侵占，你加入了反抗军，负责侦察敌情。'}
+                    ],
+                     '亚人(龙裔族)': [ // Matched key
+                        { name: '守护龙蛋的誓约者', description: '你的使命是守护一枚珍贵的龙蛋，直到它成功孵化，为此你必须远离纷争。' },
+                        { name: '寻求先祖荣耀的战士', description: '你渴望重现先祖的辉煌，为此踏上了寻找传奇武器或挑战强大存在的旅程。' },
+                        { name: '被人类养大的龙裔', description: '你从小被一位帝国将军收养，对自己的血脉一无所知，直到龙血开始觉醒。' }
+                    ],
+                    '精灵': [
+                        { name: '月光下的守护者', description: '你是守护一片古老月亮井的卫士，直到一股黑暗力量污染了它，你必须找到净化之法。' },
+                        { name: '被流放的王族', description: '一场政治阴谋让你失去了一切，你发誓要夺回属于你的荣耀，或者揭露真相。' },
+                        { name: '人类世界的研究学者', description: '你对“短生种”的世界充满好奇，离开了森林来到人类的城市，记录他们的文化。' },
+                        { name: '追寻失落魔法的法师', description: '你致力于研究古代精灵魔法，一条线索指引你离开了家园。'}
+                    ],
+                    '矮人': [
+                        { name: '失落矿坑的幸存者', description: '你所在的矿坑被未知生物袭击，你是唯一的幸存者，并带出了一块刻有神秘符文的矿石。' },
+                        { name: '符文铁匠的学徒', description: '你的师傅是矮人最伟大的铁匠之一，他派你外出寻找传说中的“星辰之火”。' },
+                        { name: '山门的守卫(失职)', description: '你曾是深石堡垒的守卫，但因为一次失职导致敌人入侵，你被驱逐出境，寻求赎罪的机会。' },
+                        { name: '追讨血债的复仇者', description: '你的氏族曾被兽人/哥布林/魔族背叛或屠戮，你带着仇恨之书踏上了复仇之路。'}
+                    ],
+                     '魔族(混血)': [ // Matched key
+                        { name: '深渊竞技场的逃亡者', description: '你通过无数次死斗赢得了暂时的自由，如今在躲避追捕的同时寻求力量。' },
+                        { name: '挣扎于血脉的边缘人', description: '你拥有魔族血脉，却在人类社会长大，你的内心充满了矛盾与挣扎。' },
+                        { name: '被深渊遗弃的试验品', description: '你是一个失败的魔法实验产物，被扔到了主物质位面，对自己的过去一无所知。'}
+                    ]
+                },
+                lilithModes: [
+                    { name:'妈妈 (无微不至的溺爱与保护)', cost:30 },
+                    { name:'妹妹 (软糯粘人的仰慕者)', cost:20 },
+                    { name:'毒舌 (句句扎心的冷酷指导)', cost:-10 }, // 负面情绪价值，可以反而给玩家加点数
+                    { name:'网络神人 (满嘴抽象爆梗的乐子人)', cost:0 },
+                    { name:'雌小鬼 (嚣张挑衅但容易吃瘪)', cost:10 }
+                ],
+                customCosts: { race: 80, identity: 60, equipment: 50, item: 30, skill: 60, redThread: 300, background: 40 } // Added background custom cost
+            };
+
+            // Holds current runtime data, including dynamically generated background list
+            let DATA = { ...DATA_POOL, backgrounds: [] };
+
+            const elements = {
+                reincarnationPointsDisplay:document.getElementById("reincarnationPointsDisplay"),
+                diceButton:document.getElementById('diceButton'),
+                diceResult:document.getElementById('diceResult'),
+                nameInput:document.getElementById("nameInput"),
+                genderInput:document.getElementById("genderInput"),
+                customGenderInput:document.getElementById("customGenderInput"),
+                ageInput:document.getElementById("ageInput"),
+                raceInput:document.getElementById("raceInput"),
+                racialBonus: document.getElementById('racialBonus'),
+                customRaceInput:document.getElementById("customRaceInput"),
+                identityInput:document.getElementById("identityInput"),
+                customIdentityInput:document.getElementById("customIdentityInput"),
+                startLocationInput:document.getElementById("startLocationInput"),
+                originVignette:document.getElementById("originVignette"),
+                attributesContainer:document.querySelector(".attributes-container"),
+                apDisplay:document.getElementById("apDisplay"),
+                relationshipGroup:document.getElementById("relationshipGroup"),
+                relationshipInput:document.getElementById("relationshipInput"),
+                relationshipVignette:document.getElementById("relationshipVignette"),
+                backgroundsSummary:document.getElementById("backgroundsSummary"),
+                backgroundStoryGroup:document.getElementById("backgroundStoryGroup"),
+                backgroundStory:document.getElementById("backgroundStory"),
+                imperialState:document.getElementById("imperialState"),
+                imperialStateLabel:document.getElementById("imperialStateLabel"),
+                abyssalState:document.getElementById("abyssalState"),
+                abyssalStateLabel:document.getElementById("abyssalStateLabel"),
+                worldStateCost:document.getElementById("worldStateCost"),
+                lilithModeInput:document.getElementById("lilithModeInput"),
+                destinyPointsFinal:document.getElementById("destinyPointsFinal"),
+                sendButton:document.getElementById("sendButton"),
+                modal:document.getElementById("selectionModal"),
+                modalTitle:document.getElementById("modalTitle"),
+                modalOptionsList:document.getElementById("modalOptionsList"),
+                modalConfirmBtn:document.getElementById("modalConfirmBtn"),
+                closeBtn:document.querySelector(".close-btn"),
+                equipmentsSummary: document.getElementById('equipmentsSummary'),
+                itemsSummary: document.getElementById('itemsSummary'),
+                skillsSummary: document.getElementById('skillsSummary'),
+                negativeTraitsSummary: document.getElementById('negativeTraitsSummary'),
+                redThreadsSummary: document.getElementById('redThreadsSummary'),
+            };
+            // Holds user's current choices
+            let selections = { equipments:[], items:[], skills:[], negativeTraits:[], redThreads:[], backgrounds:[], custom:{} };
+            // Holds points allocated to attributes
+            let attributePoints = {};
+            // Holds currently applied racial bonus info
+            let racialBonuses = {};
+            // Holds dice roll result
+            let diceRollResult = { roll: 0, points: 0 };
+            let diceRolled = false;
+            // Holds current point balance
+            let currentReincarnationPoints = 0;
+            // List of attributes
+            const attributes = ['力量','敏捷','体质','智力','精神', '魅力'];
+            // Total points for attribute allocation
+            const AP_TOTAL = 5;
+            // Currently open modal category
+            let currentOpenCategory = '';
+
+            // --- Function Implementations ---
+
+             function init() {
+                elements.raceInput.add(new Option('选择你的血脉...', '', true, true));
+                DATA_POOL.races.forEach(r => {
+                    const costVal = r.cost || 0;
+                    const costText = costVal > 0 ? `-${costVal}` : costVal < 0 ? `+${-costVal}` : '0';
+                    const opt = new Option(`${r.id} (${costText}点)`, r.id);
+                    opt.dataset.cost = costVal;
+                    elements.raceInput.add(opt);
+                 });
+                const customRaceOpt = new Option(`自定义 (-${DATA_POOL.customCosts.race}点)`, 'custom');
+                customRaceOpt.dataset.cost = DATA_POOL.customCosts.race;
+                elements.raceInput.add(customRaceOpt);
+
+                DATA_POOL.lilithModes.forEach(m => {
+                    const costVal = m.cost || 0;
+                    const costText = costVal > 0 ? `-${costVal}` : '0';
+                    const opt = new Option(`${m.name} (${costText}点)`, m.name);
+                    opt.dataset.cost = costVal;
+                    elements.lilithModeInput.add(opt);
+                });
+                 elements.lilithModeInput.value = DATA_POOL.lilithModes[0].name;
+
+                renderAttributeControls();
+                addEventListeners();
+                updateAll();
+            }
+
+            function updateAll() {
+                applyRaceBonuses();
+                updateIdentityOptions();
+                updateLocationOptions();
+                updateBackgroundOptions();
+                updateRelationshipOptions();
+                updateVignettes();
+                calculatePoints();
+            }
+
+            function addEventListeners() {
+                elements.diceButton.addEventListener('click', rollTheDice);
+
+                elements.raceInput.addEventListener('change', () => {
+                    elements.customRaceInput.classList.toggle('show', elements.raceInput.value === 'custom');
+                    elements.identityInput.value = "";
+                    selections.identity = null;
+                    elements.startLocationInput.value = "";
+                    selections.backgrounds = [];
+                    updateSelectionSummary('backgrounds');
+                     elements.backgroundStoryGroup.classList.remove('show');
+                     elements.backgroundStory.value = '';
+                     // Remove incompatible race skills
+                     const raceId = elements.raceInput.value;
+                     const skillsToRemove = [];
+                     selections.skills.forEach(skillName => {
+                         const skillData = DATA_POOL.skills.find(s => s.name === skillName);
+                         const raceMatch = skillData?.name.match(/种族技艺：.*\((.*?)\)/);
+                         if (raceMatch) {
+                            const allowedRaces = raceMatch[1].split(/[\\/,\s]+/);
+                            if (raceId && raceId !== 'custom' && !allowedRaces.some(ar => raceId.includes(ar))) {
+                                skillsToRemove.push(skillName);
+                            }
+                         }
+                     });
+                     if(skillsToRemove.length > 0) {
+                         selections.skills = selections.skills.filter(s => !skillsToRemove.includes(s));
+                         updateSelectionSummary('skills');
+                     }
+                    updateAll();
+                });
+
+                elements.identityInput.addEventListener('change', () => {
+                    elements.customIdentityInput.classList.toggle('show', elements.identityInput.value === 'custom');
+                    elements.startLocationInput.value = "";
+                    updateLocationOptions();
+                    updateVignettes();
+                    calculatePoints();
+                });
+
+                 elements.startLocationInput.addEventListener('change', calculatePoints);
+                 elements.relationshipInput.addEventListener('change', () => {
+                     updateVignettes();
+                     calculatePoints();
+                 });
+                 elements.lilithModeInput.addEventListener('change', calculatePoints);
+                 elements.genderInput.addEventListener('change', () => {
+                    elements.customGenderInput.classList.toggle('show', elements.genderInput.value === 'custom');
+                    calculatePoints();
+                 });
+                 elements.ageInput.addEventListener('input', calculatePoints);
+
+                ['customGenderInput', 'customRaceInput', 'customIdentityInput', 'backgroundStory'].forEach(id => {
+                     const el = elements[id];
+                     if (el) el.addEventListener('input', calculatePoints);
+                 });
+
+                [elements.imperialState, elements.abyssalState].forEach(slider => slider.addEventListener('input', () => {
+                    const iLabels = {'-20':'帝国衰微','0':'秩序井然','20':'帝国鼎盛'}, aLabels = {'-15':'深渊沉睡','0':'暗流涌动','15':'深渊入侵'};
+                    elements.imperialStateLabel.textContent = iLabels[elements.imperialState.value];
+                    elements.abyssalStateLabel.textContent = aLabels[elements.abyssalState.value];
+                    calculatePoints();
+                }));
+
+                document.querySelectorAll('.selection-btn').forEach(btn => btn.addEventListener('click', () => openModal(btn.dataset.category)));
+                // **Corrected Event Listener Attachment:**
+                elements.modalConfirmBtn.addEventListener('click', handleModalConfirm); // Ensure this line exists and is correct
+                elements.closeBtn.addEventListener('click', closeModal);
+                window.addEventListener('click', e => { if (e.target === elements.modal) closeModal(); });
+                elements.sendButton.addEventListener('click', generateOutput);
+            }
+
+             function rollTheDice(){
+                if(diceRolled) return;
+                const roll1 = Math.floor(Math.random() * 6) + 1;
+                const roll2 = Math.floor(Math.random() * 6) + 1;
+                const totalRoll = roll1 + roll2;
+                 const points = 500 + totalRoll * 25; // Base 500 + 50 to 300 (Total 550 - 800)
+                diceRollResult = { roll: totalRoll, points: points };
+                elements.diceResult.innerHTML = `你掷出了 ${roll1} + ${roll2} = ${totalRoll}点, 获得 <b>${points}</b> 点初始转生点！`;
+                elements.diceResult.style.display = 'block';
+                elements.diceButton.disabled = true;
+                diceRolled = true;
+                calculatePoints(); // Update points display and enable confirm button if > 0
+            }
+
+            function renderAttributeControls() {
+                elements.attributesContainer.innerHTML = '';
+                attributes.forEach(attr => {
+                    attributePoints[attr] = 0;
+                    elements.attributesContainer.insertAdjacentHTML('beforeend',
+                     `<div class="attribute-control" data-attr="${attr}">
+                         <span class="stat-name">${attr}</span>
+                         <span class="stat-value">4</span>
+                         <div class="ap-buttons">
+                             <button class="ap-btn minus" disabled>-</button>
+                             <input type="number" class="ap-input" value="0" readonly>
+                             <button class="ap-btn plus">+</button>
+                         </div>
+                      </div>`);
+                });
+                elements.attributesContainer.querySelectorAll('.ap-btn').forEach(btn => btn.addEventListener('click', e => {
+                    const control = e.target.closest('.attribute-control');
+                    const stat = control.dataset.attr;
+                    const isPlus = e.target.classList.contains('plus');
+                    const totalAllocated = Object.values(attributePoints).reduce((s,p)=>s+p, 0);
+                    if(isPlus && totalAllocated < AP_TOTAL) attributePoints[stat]++;
+                    else if(!isPlus && attributePoints[stat] > 0) attributePoints[stat]--;
+                    updateAttributes();
+                }));
+            }
+
+             function updateAttributes() {
+                const totalAllocated = Object.values(attributePoints).reduce((s,p)=>s+p, 0);
+                elements.apDisplay.textContent = AP_TOTAL - totalAllocated;
+                const bonusAttrs = racialBonuses.attributes || {};
+                attributes.forEach(attr => {
+                    const row = document.querySelector(`.attribute-control[data-attr="${attr}"]`);
+                    if (!row) return;
+                    const baseValue = 4;
+                    const racialBonus = bonusAttrs[attr] || 0;
+                    const allocatedPoints = attributePoints[attr];
+                    const finalValue = baseValue + racialBonus + allocatedPoints;
+                    row.querySelector('.stat-value').textContent = finalValue;
+                    row.querySelector('.ap-input').value = allocatedPoints;
+                    row.querySelector('.plus').disabled = totalAllocated >= AP_TOTAL;
+                    row.querySelector('.minus').disabled = allocatedPoints <= 0;
+                });
+                calculatePoints(); // Recalculate points after attribute update
+            }
+
+            function applyRaceBonuses() {
+                const raceId = elements.raceInput.value;
+                const race = DATA_POOL.races.find(r => r.id === raceId);
+                racialBonuses = (race && race.bonus) ? { ...race.bonus } : { text: '', attributes: {} };
+                elements.racialBonus.textContent = racialBonuses.text || '';
+                updateAttributes(); // Apply bonuses THEN update attributes display
+            }
+
+            function updateIdentityOptions() {
+                const raceId = elements.raceInput.value;
+                const race = DATA_POOL.races.find(r => r.id === raceId);
+                const currentVal = elements.identityInput.value;
+                elements.identityInput.innerHTML = `<option value="" disabled selected>选择身份...</option>`;
+                let availableIdentities = [];
+                if (race && race.identities) {
+                    availableIdentities = race.identities.map(idName => DATA_POOL.identities[idName]).filter(Boolean);
+                } else if (!raceId || raceId === 'custom') {
+                     availableIdentities = Object.values(DATA_POOL.identities);
+                }
+                availableIdentities.sort((a,b) => a.name.localeCompare(b.name, 'zh-CN'));
+                availableIdentities.forEach(idData => {
+                    const costVal = idData.cost || 0;
+                    const costText = costVal >= 0 ? `-${costVal}` : `+${-costVal}`;
+                    const opt = new Option(`${idData.name} (${costText}点)`, idData.name);
+                    opt.dataset.cost = costVal;
+                    elements.identityInput.add(opt);
+                });
+                const customOpt = new Option(`自定义 (-${DATA_POOL.customCosts.identity}点)`, 'custom');
+                customOpt.dataset.cost = DATA_POOL.customCosts.identity;
+                elements.identityInput.add(customOpt);
+                if (Array.from(elements.identityInput.options).some(o => o.value === currentVal)) {
+                    elements.identityInput.value = currentVal;
+                } else {
+                     elements.identityInput.value = "";
+                }
+                 elements.customIdentityInput.classList.toggle('show', elements.identityInput.value === 'custom');
+            }
+
+            function updateLocationOptions() {
+                const identityName = elements.identityInput.value;
+                const identity = DATA_POOL.identities[identityName];
+                const currentVal = elements.startLocationInput.value;
+                elements.startLocationInput.innerHTML = `<option value="" disabled selected>选择地点...</option>`;
+                let availableLocationIds = [];
+                if (identity && identity.locations) availableLocationIds = identity.locations;
+                else availableLocationIds = Object.keys(DATA_POOL.locations);
+                const validLocationIds = availableLocationIds.filter(id => DATA_POOL.locations[id]);
+                 validLocationIds.sort((a, b) => a.localeCompare(b, 'zh-CN'));
+                validLocationIds.forEach(id => {
+                    const locData = DATA_POOL.locations[id];
+                    const costVal = locData.cost || 0;
+                    const costText = costVal >= 0 ? `-${costVal}` : `+${-costVal}`;
+                    const displayName = id.replace(/-\(/g, ' (').replace(/-/g, ' - ');
+                    const opt = new Option(`${displayName} (${costText}点)`, id);
+                    opt.dataset.cost = costVal;
+                    elements.startLocationInput.add(opt);
+                });
+                if (Array.from(elements.startLocationInput.options).some(o => o.value === currentVal)) {
+                    elements.startLocationInput.value = currentVal;
+                } else {
+                    elements.startLocationInput.value = "";
+                }
+            }
+
+            function updateBackgroundOptions(){
+                const raceId = elements.raceInput.value;
+                const raceBackgrounds = DATA_POOL.raceBackgrounds[raceId] || [];
+                const genericBackgrounds = [
+                     { name: '失忆者', description: '你失去了所有记忆，只知道自己的名字和一些基本技能。' },
+                     { name: '复仇之旅', description: '你的亲人或家园被毁，你踏上了寻找仇敌的道路。'},
+                     { name: '朝圣者', description: '你响应神的呼唤或为了赎罪，前往某个圣地。'},
+                     { name: '学徒之旅', description: '你的导师派你外出历练，学习更多知识和技艺。'},
+                     { name: '家族使命', description: '你的家族赋予了你一项重要的使命，关系到家族的荣辱。'}
+                 ];
+                DATA.backgrounds = [ ...raceBackgrounds, ...genericBackgrounds, { name: '【自定义背景】', description: '自由发挥你的想象力。' } ];
+                 DATA.backgrounds = DATA.backgrounds.filter((bg, index, self) => index === self.findIndex((t) => (t.name === bg.name)));
+                if(selections.backgrounds.length > 0) {
+                    const currentBgName = selections.backgrounds[0];
+                    if (!DATA.backgrounds.some(bg => bg.name === currentBgName)) {
+                        selections.backgrounds = [];
+                        updateSelectionSummary('backgrounds');
+                         elements.backgroundStoryGroup.classList.remove('show');
+                         elements.backgroundStory.value = '';
+                    }
+                }
+            }
+
+            function updateRelationshipOptions() {
+                const partnerName = selections.redThreads.length > 0 ? selections.redThreads[0] : null;
+                elements.relationshipGroup.classList.toggle('show', !!partnerName);
+                if (partnerName && DATA_POOL.relationships[partnerName]) {
+                    const currentVal = elements.relationshipInput.value;
+                    elements.relationshipInput.innerHTML = '';
+                    DATA_POOL.relationships[partnerName].forEach(rel => {
+                        const costVal = rel.cost || 0;
+                        const costText = costVal > 0 ? `-${costVal}点` : costVal < 0 ? `+${-costVal}点` : '0点';
+                        const opt = new Option(`${rel.name} (${costText})`, rel.name);
+                        opt.dataset.cost = costVal;
+                        elements.relationshipInput.add(opt);
+                    });
+                     if (Array.from(elements.relationshipInput.options).some(o => o.value === currentVal)) elements.relationshipInput.value = currentVal;
+                     else if (elements.relationshipInput.options.length > 0) elements.relationshipInput.selectedIndex = 0;
+                } else {
+                     elements.relationshipInput.innerHTML = '';
+                }
+                 // updateVignettes(); // Called by updateAll
+                 // calculatePoints(); // Called by updateAll
+            }
+
+             function updateVignettes() {
+                const identityName = elements.identityInput.value;
+                const identity = DATA_POOL.identities[identityName];
+                elements.originVignette.style.display = (identity && identity.vignette) ? 'block' : 'none';
+                if (identity && identity.vignette) elements.originVignette.textContent = identity.vignette;
+
+                const partnerName = selections.redThreads.length > 0 ? selections.redThreads[0] : null;
+                const relationshipName = elements.relationshipInput.value;
+                const relationship = partnerName && relationshipName && DATA_POOL.relationships[partnerName]
+                                        ? DATA_POOL.relationships[partnerName].find(r => r.name === relationshipName) : null;
+                elements.relationshipVignette.style.display = (relationship && relationship.vignette) ? 'block' : 'none';
+                if (relationship && relationship.vignette) elements.relationshipVignette.textContent = relationship.vignette;
+            }
+
+            function openModal(category) {
+                 if (!diceRolled && category !== 'negativeTraits') {
+                     alert('请先掷出命运之骰以确定可用点数！');
+                     return;
+                 }
+                currentOpenCategory = category;
+                elements.modal.style.display = 'block';
+                populateModal(category);
+            }
+
+            function closeModal() { elements.modal.style.display = 'none'; }
+
+            function populateModal(category) {
+                const isRadio = ['redThreads', 'backgrounds'].includes(category);
+                const data = DATA[category] || DATA_POOL[category] || [];
+                const raceId = elements.raceInput.value;
+                let filteredData = data;
+                if (category === 'skills') {
+                     filteredData = data.filter(skill => {
+                         const raceMatch = skill.name.match(/种族技艺：.*\((.*?)\)/);
+                         if (raceMatch) {
+                             const allowedRaces = raceMatch[1].split(/[\\/,\s]+/);
+                             return !raceId || raceId === 'custom' || allowedRaces.some(ar => raceId.includes(ar));
+                         }
+                         return true;
+                     });
+                 }
+                const titles = {'equipments':'装备','items':'物品','skills':'技能与天赋','negativeTraits':'负面特质','redThreads':'初始伙伴','backgrounds':'背景剧本'};
+                elements.modalTitle.textContent = `选择${titles[category]}` + (isRadio ? ' (单选)' : ' (多选)');
+                elements.modalOptionsList.innerHTML = '';
+
+                // Calculate points available if *nothing* in this category were selected
+                 let pointsAvailableForModal = currentReincarnationPoints;
+                 const cat_single_modal = category !== 'negativeTraits' ? category.slice(0, -1) : null;
+                 selections[category].forEach(name => {
+                     const item = DATA_POOL[category]?.find(i => i.name === name);
+                     if(item) {
+                        pointsAvailableForModal += (category === 'negativeTraits' ? -(item.points || 0) : (item.cost || 0));
+                     }
+                 });
+                 if (cat_single_modal && selections.custom[cat_single_modal]) {
+                    pointsAvailableForModal += DATA_POOL.customCosts[cat_single_modal] || 0;
+                 }
+                // ---
+
+                filteredData.sort((a, b) => {
+                    const rarityOrder = ['common', 'uncommon', 'rare', 'epic', 'legendary', 'mythic'];
+                    const rarityA = rarityOrder.indexOf(a.rarity);
+                    const rarityB = rarityOrder.indexOf(b.rarity);
+                    if (rarityA !== rarityB) return rarityA - rarityB;
+                    return (a.cost || a.points || 0) - (b.cost || b.points || 0);
+                });
+
+                filteredData.forEach(item => {
+                    const isSelected = selections[category].includes(item.name);
+                    let costVal = 0;
+                    let costText = '';
+                    if (category === 'negativeTraits') {
+                        costVal = item.points || 0;
+                        costText = `| +${costVal}点`;
+                    } else {
+                        costVal = item.cost || 0;
+                        costText = costVal > 0 ? `| -${costVal}点` : '| 0点';
+                    }
+                    const rarity = RARITY_MAP[item.rarity] || '';
+                    const rarityText = rarity ? `<span class="rarity-${item.rarity}">【${rarity}】</span>` : '';
+                    // Disable if multi-select, not selected, costs points, and exceeds available points
+                    const isDisabled = !isRadio && !isSelected && category !== 'negativeTraits' && costVal > 0 && pointsAvailableForModal < costVal;
+
+                    const el = document.createElement('label');
+                    el.className = 'skill-option';
+                    el.style.opacity = isDisabled ? 0.6 : 1;
+                    el.style.cursor = isDisabled ? 'not-allowed' : 'pointer';
+                    if (isDisabled) el.title = "点数不足";
+
+                    el.innerHTML = `
+                        <input type="${isRadio ? 'radio':'checkbox'}" name="${category}" value="${item.name}" ${isSelected ? 'checked':''} ${isDisabled ? 'disabled':''}>
+                        <div class="skill-option-content">
+                            <span class="skill-main-info">${rarityText} ${item.name} ${costText}</span>
+                            <small class="skill-description">${item.description || ''}</small>
+                        </div>`;
+                    elements.modalOptionsList.appendChild(el);
+                });
+
+                const cat_single = category !== 'negativeTraits' ? category.slice(0, -1) : null;
+                if (cat_single && DATA_POOL.customCosts[cat_single] && category !== 'backgrounds') {
+                    const customCost = DATA_POOL.customCosts[cat_single];
+                    const isCustomSelected = selections.custom[cat_single] && selections.custom[cat_single].length > 0;
+                    const isCustomDisabled = !isCustomSelected && customCost > 0 && pointsAvailableForModal < customCost;
+
+                    const customEl = document.createElement('div');
+                    customEl.className = 'modal-custom-section';
+                     customEl.style.opacity = isCustomDisabled ? 0.6 : 1;
+                    customEl.innerHTML = `
+                        <label for="custom-toggle-${category}" style="display: flex; align-items: center; cursor: ${isCustomDisabled ? 'not-allowed' : 'pointer'};">
+                             <input type="checkbox" id="custom-toggle-${category}" style="margin-right: 10px;" ${isCustomSelected ? 'checked' : ''} ${isCustomDisabled ? 'disabled' : ''}>
+                            自定义 (-${customCost}点)
+                        </label>
+                        <textarea id="custom-${category}" rows="3" placeholder="请详细描述..." style="display:${isCustomSelected ? 'block' : 'none'}; margin-top: 5px;" ${isCustomDisabled ? 'disabled' : ''}>${selections.custom[cat_single] || ''}</textarea>`;
+
+                    const checkbox = customEl.querySelector(`#custom-toggle-${category}`);
+                    const textarea = customEl.querySelector(`#custom-${category}`);
+                     checkbox.addEventListener('change', () => {
+                         textarea.style.display = checkbox.checked ? 'block' : 'none';
+                         if (!checkbox.checked) textarea.value = '';
+                     });
+                    elements.modalOptionsList.appendChild(customEl);
+                }
+            }
+
+
+             // **Simplified and Corrected handleModalConfirm**
+            function handleModalConfirm() {
+                 // console.log("Confirm button clicked for category:", currentOpenCategory); // Debug log
+                const cat = currentOpenCategory;
+                const isRadio = ['redThreads', 'backgrounds'].includes(cat);
+
+                // --- Calculate Cost/Gain of NEW Selections ---
+                let newCost = 0;
+                let newGain = 0;
+                let newSelectedValues = [];
+                let newCustomValue = '';
+                const cat_single = cat !== 'negativeTraits' ? cat.slice(0, -1) : null;
+
+                // Process regular items checked in the modal
+                 elements.modalOptionsList.querySelectorAll(`input[name="${cat}"]:checked`).forEach(input => {
+                    newSelectedValues.push(input.value);
+                    const item = DATA_POOL[cat]?.find(i => i.name === input.value);
+                    if (item) {
+                        if (cat === 'negativeTraits') newGain += item.points || 0;
+                        else newCost += item.cost || 0;
+                    }
+                 });
+
+
+                // Process custom item if applicable and checked
+                const customToggle = document.getElementById(`custom-toggle-${cat}`);
+                const customTextarea = document.getElementById(`custom-${cat}`);
+                if (customToggle && customToggle.checked && customTextarea && customTextarea.value.trim().length > 0) {
+                    newCustomValue = customTextarea.value.trim();
+                    if (cat_single && DATA_POOL.customCosts[cat_single]) {
+                        newCost += DATA_POOL.customCosts[cat_single];
+                    }
+                }
+
+                // --- Calculate Points Available (excluding current category's impact) ---
+                 let pointsWithoutCategory = currentReincarnationPoints;
+                 // Add back cost / Subtract gain of CURRENT selections before applying NEW ones
+                 selections[cat].forEach(name => {
+                     const item = DATA_POOL[cat]?.find(i => i.name === name);
+                     if (item) {
+                         pointsWithoutCategory += (cat === 'negativeTraits' ? -(item.points || 0) : (item.cost || 0));
+                     }
+                 });
+                 if (cat_single && selections.custom[cat_single]) {
+                     pointsWithoutCategory += DATA_POOL.customCosts[cat_single] || 0;
+                 }
+
+
+                // --- Check Affordability ---
+                const finalSimulatedPoints = pointsWithoutCategory + newGain - newCost;
+
+                if (finalSimulatedPoints < 0) {
+                    alert(`点数不足！选择后将剩余 ${finalSimulatedPoints} 点。请重新调整。`);
+                    populateModal(cat); // Refresh modal to potentially re-enable options
+                    return; // Stop confirmation
+                }
+
+                // --- If affordable, Update Selections ---
+                selections[cat] = newSelectedValues;
+                if (cat_single) {
+                    selections.custom[cat_single] = newCustomValue;
+                }
+
+                // Special handling after selection
+                if(cat === 'redThreads') updateRelationshipOptions();
+                if(cat === 'backgrounds') {
+                    elements.backgroundStoryGroup.classList.toggle('show', newSelectedValues[0] === '【自定义背景】');
+                     if (newSelectedValues[0] !== '【自定义背景】') {
+                         elements.backgroundStory.value = '';
+                         selections.custom.background = ''; // Clear custom data if predefined selected
+                     }
+                }
+
+                updateSelectionSummary(cat); // Update the summary text
+                calculatePoints(); // Recalculate and display final points
+                closeModal();
+            }
+
+
+            function updateSelectionSummary(category) {
+                const summaryEl = document.getElementById(`${category}Summary`);
+                if (!summaryEl) return;
+
+                let cost = 0;
+                let gain = 0;
+                let count = selections[category].length;
+                const cat_single = category !== 'negativeTraits' ? category.slice(0, -1) : null;
+                let isCustomPresent = cat_single && selections.custom[cat_single] && selections.custom[cat_single].length > 0;
+
+                selections[category].forEach(name => {
+                    const item = DATA_POOL[category]?.find(i => i.name === name);
+                    if (item) {
+                        if (category === 'negativeTraits') gain += item.points || 0;
+                        else cost += item.cost || 0;
+                    }
+                });
+
+                let customText = '';
+                if (isCustomPresent) {
+                    cost += DATA_POOL.customCosts[cat_single] || 0;
+                    customText = ' (含自定义)';
+                     // For single-select custom, the name is '自定义...'
+                     if(['redThreads', 'backgrounds'].includes(category)) count = 1; // Ensure count is 1 for single select custom
+                }
+
+                if (category === 'negativeTraits') {
+                    summaryEl.textContent = `已选 ${count} 项，获得 ${gain} 点`;
+                } else if (['redThreads', 'backgrounds'].includes(category)) {
+                    let selectedName = selections[category].length > 0 ? selections[category][0] : '未选择';
+                    if (isCustomPresent) { // Simplified custom display name
+                         selectedName = category === 'redThreads' ? '自定义伙伴' : '自定义背景';
+                     }
+                    summaryEl.textContent = `已选: ${selectedName}`;
+                } else {
+                    summaryEl.textContent = `已选 ${count} 项，消耗 ${cost} 点${customText}`;
+                }
+            }
+
+
+            function calculatePoints() {
+                if (!diceRolled) {
+                    elements.reincarnationPointsDisplay.textContent = '???';
+                     elements.sendButton.disabled = true;
+                     elements.sendButton.textContent = '请先掷骰';
+                    return;
+                }
+                const getSelectedData = (el) => el.options[el.selectedIndex];
+                let basePoints = diceRollResult.points;
+                let cost = 0; let gain = 0;
+                const addPoints = (value) => {
+                     const numValue = Number(value) || 0;
+                     if (numValue >= 0) cost += numValue; else gain += -numValue;
+                };
+
+                 // Base Costs/Gains
+                const raceId = elements.raceInput.value;
+                 if (raceId === 'custom') addPoints(DATA_POOL.customCosts.race);
+                 else addPoints(DATA_POOL.races.find(r => r.id === raceId)?.cost);
+                const identityName = elements.identityInput.value;
+                 if (identityName === 'custom') addPoints(DATA_POOL.customCosts.identity);
+                 else addPoints(DATA_POOL.identities[identityName]?.cost);
+                addPoints(getSelectedData(elements.startLocationInput)?.dataset.cost);
+                addPoints(DATA_POOL.lilithModes.find(m => m.name === elements.lilithModeInput.value)?.cost);
+                const partnerNameRel = selections.redThreads.length > 0 ? selections.redThreads[0] : null;
+                addPoints(DATA_POOL.relationships[partnerNameRel]?.find(r => r.name === elements.relationshipInput.value)?.cost);
+
+                // Selections Costs
+                ['equipments', 'items', 'skills', 'redThreads'].forEach(cat => {
+                    (selections[cat] || []).forEach(name => addPoints(DATA_POOL[cat].find(i => i.name === name)?.cost));
+                     const cat_single = cat.slice(0, -1);
+                     if (selections.custom[cat_single] && selections.custom[cat_single].length > 0) addPoints(DATA_POOL.customCosts[cat_single]);
+                });
+                 // Background Cost
+                 const bgName = selections.backgrounds.length > 0 ? selections.backgrounds[0] : null;
+                 if (bgName === '【自定义背景】' && selections.custom.background) addPoints(DATA_POOL.customCosts.background);
+                 // else addPoints(DATA_POOL.backgrounds.find(b => b.name === bgName)?.cost); // If predefined BGs get costs
+
+                // Negative Traits Gain
+                (selections.negativeTraits || []).forEach(name => gain += DATA_POOL.negativeTraits.find(i => i.name === name)?.points || 0);
+
+                 // World State Adjustment
+                const worldStateAdjustment = parseInt(elements.imperialState.value) + parseInt(elements.abyssalState.value);
+                elements.worldStateCost.textContent = worldStateAdjustment >= 0 ? `-${worldStateAdjustment}` : `+${-worldStateAdjustment}`;
+                addPoints(worldStateAdjustment);
+
+                // Final Calculation
+                currentReincarnationPoints = basePoints + gain - cost;
+                elements.reincarnationPointsDisplay.textContent = currentReincarnationPoints;
+                elements.reincarnationPointsDisplay.parentElement.style.color = currentReincarnationPoints < 0 ? '#ff0000' : 'var(--points-color)';
+                elements.destinyPointsFinal.textContent = Math.max(0, currentReincarnationPoints) * 10;
+                elements.sendButton.disabled = currentReincarnationPoints < 0;
+                elements.sendButton.textContent = currentReincarnationPoints < 0 ? `点数不足 (${currentReincarnationPoints})` : '织造命运，踏上旅程';
+            }
+
+            function generateOutput() {
+                if (!diceRolled) { alert('请先掷出你的命运起点！'); return; }
+                if (currentReincarnationPoints < 0) { alert(`转生点不足！剩余 ${currentReincarnationPoints} 点，请重新调整你的选择。`); return; }
+                 if (!elements.nameInput.value.trim()) { alert('请输入姓名！'); elements.nameInput.focus(); return; }
+                 if (!elements.genderInput.value || (elements.genderInput.value === 'custom' && !elements.customGenderInput.value.trim())) { alert('请选择或输入性别！'); elements.genderInput.focus(); return; }
+                 if (elements.ageInput.value === '' || elements.ageInput.value < 0) { alert('请输入有效的年龄！'); elements.ageInput.focus(); return; }
+                 if (!elements.raceInput.value || (elements.raceInput.value === 'custom' && !elements.customRaceInput.value.trim())) { alert('请选择或输入种族！'); elements.raceInput.focus(); return; }
+                 if (!elements.identityInput.value || (elements.identityInput.value === 'custom' && !elements.customIdentityInput.value.trim())) { alert('请选择或输入身份！'); elements.identityInput.focus(); return; }
+                 if (!elements.startLocationInput.value) { alert('请选择起始地点！'); elements.startLocationInput.focus(); return; }
+                 if (Object.values(attributePoints).reduce((s, p) => s + p, 0) !== AP_TOTAL) { alert(`请分配完所有 ${AP_TOTAL} 点属性点！`); return; }
+                  if (selections.backgrounds.length === 0) { alert('请选择背景剧本！'); return; }
+                  if (selections.backgrounds[0] === '【自定义背景】' && !elements.backgroundStory.value.trim()) { alert('请填写你的自定义背景故事！'); elements.backgroundStory.focus(); return; }
+                 if (selections.redThreads.length > 0 && !elements.relationshipInput.value) { alert('请为你的初始伙伴选择一个初始关系！'); elements.relationshipInput.focus(); return;}
+
+                const getVal = (el, customEl) => el.value === 'custom' ? customEl.value.trim() : el.value;
+                const formatModal = (cat) => {
+                    let text = selections[cat].map(name => {
+                        const item = DATA_POOL[cat]?.find(i => i.name === name);
+                        const rarity = item?.rarity ? `【${RARITY_MAP[item.rarity]}】` : '';
+                        return `${rarity}${name}`;
+                    }).join(', ');
+                    const s_cat = cat !== 'negativeTraits' ? cat.slice(0,-1) : null;
+                    if (s_cat && selections.custom[s_cat] && selections.custom[s_cat].length > 0) {
+                        text += (text ? ', ' : '') + `【自定义】: ${selections.custom[s_cat]}`;
+                    }
+                    return text || '无';
+                };
+
+                const finalDestinyPoints = Math.max(0, currentReincarnationPoints) * 10;
+                const backgroundName = selections.backgrounds.length > 0 ? selections.backgrounds[0] : '无';
+                let backgroundDescription = '';
+                let backgroundFinalText = backgroundName;
+                if (backgroundName === '【自定义背景】') {
+                    backgroundDescription = elements.backgroundStory.value.trim();
+                    backgroundFinalText = '自定义背景';
+                 } else if (backgroundName !== '无') {
+                     const backgroundData = DATA.backgrounds.find(bg => bg.name === backgroundName);
+                     backgroundDescription = backgroundData ? backgroundData.description : '';
+                 }
+                let attrString = attributes.map(attr => `${attr}: ${document.querySelector(`.attribute-control[data-attr="${attr}"] .stat-value`).textContent}`).join(' / ');
+                 const startLocOpt = elements.startLocationInput.options[elements.startLocationInput.selectedIndex];
+                 const startLocationDisplay = startLocOpt ? startLocOpt.text.split(' (')[0] : '未知';
+
+                let message = `【自定义开局】\n---\n**角色卡**\n`
+                    + `* **命运之骰:** ${diceRollResult.roll} (初始点数: ${diceRollResult.points})\n\n`
+                    + `* **姓名:** ${elements.nameInput.value.trim() || '无名者'}\n`
+                    + `* **性别:** ${getVal(elements.genderInput, elements.customGenderInput) || '未定'}\n`
+                    + `* **年龄:** ${elements.ageInput.value || '未知'}\n`
+                    + `* **种族:** ${getVal(elements.raceInput, elements.customRaceInput) || '未知'}\n`
+                    + `* **种族特性:** ${racialBonuses.text || '无'}\n`
+                    + `* **身份:** ${getVal(elements.identityInput, elements.customIdentityInput) || '未知'}\n`
+                    + `* **起始地点:** ${startLocationDisplay}\n\n`
+                    + `* **属性:** ${attrString}\n\n`
+                    + `* **世界状态:** 帝国: ${elements.imperialStateLabel.textContent}, 深渊: ${elements.abyssalStateLabel.textContent}\n`
+                    + `* **AI助手模式:** ${elements.lilithModeInput.value}\n`
+                    + `* **最终命运点数(FP):** ${finalDestinyPoints}\n\n`
+                    + `**--- 详情 ---**\n`
+                    + `* **背景:** ${backgroundFinalText}${backgroundDescription ? `\n    * *背景描述:* ${backgroundDescription}` : ''}\n`
+                    + `* **负面特质:** ${formatModal('negativeTraits')}\n`
+                    + `* **初始伙伴:** ${selections.redThreads.length > 0 ? formatModal('redThreads') : '无'}${elements.relationshipInput.value ? ` (关系: ${elements.relationshipInput.value})` : ''}\n`
+                    + `* **装备:** ${formatModal('equipments')}\n`
+                    + `* **物品:** ${formatModal('items')}\n`
+                    + `* **技能与天赋:** ${formatModal('skills')}\n`
+                    + `---`;
+
+                if (typeof triggerSlash !== 'undefined') {
+                    triggerSlash(`/send ${message}`);
+                } else {
+                    console.log(message);
+                    alert('角色卡已生成，请在浏览器控制台(F12)查看或复制。');
+                    try {
+                        navigator.clipboard.writeText(message).then(() => {
+                            console.log('角色卡已复制到剪贴板');
+                        }).catch(err => {
+                             console.error('无法自动复制到剪贴板:', err);
+                             alert('角色卡已生成在控制台，但自动复制失败。请手动复制。');
+                        });
+                    } catch (err) {
+                        console.error('剪贴板API不可用:', err);
+                        alert('角色卡已生成在控制台。您的浏览器不支持自动复制。请手动复制。');
+                    }
+                }
+            }
+            // --- Initialize ---
+            init();
+        });
+    </script>
+</body>
+</html>
+```
